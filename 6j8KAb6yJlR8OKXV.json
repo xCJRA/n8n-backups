@@ -1,0 +1,927 @@
+{
+  "active": false,
+  "connections": {
+    "Chat model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "ZoraBot",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "ZoraBot",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta sesión": {
+      "main": [
+        [
+          {
+            "node": "¿Existe sesión?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Existe sesión?": {
+      "main": [
+        [
+          {
+            "node": "Consultamos el modo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Guarda Sesión",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guarda Sesión": {
+      "main": [
+        [
+          {
+            "node": "Consultamos el modo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Modo AI?": {
+      "main": [
+        [
+          {
+            "node": "datos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "datos_iniciales": {
+      "main": [
+        [
+          {
+            "node": "Consulta sesión",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "datos": {
+      "main": [
+        [
+          {
+            "node": "ZoraBot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        []
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "datos_iniciales",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultamos el modo1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Activa modo IA": {
+      "main": [
+        [
+          {
+            "node": "Send email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Activa modo IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultamos el modo": {
+      "main": [
+        [
+          {
+            "node": "¿Modo AI?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FAQ_ZORA": {
+      "ai_tool": [
+        [
+          {
+            "node": "ZoraBot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manuales_ZORA": {
+      "ai_tool": [
+        [
+          {
+            "node": "ZoraBot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Genera_Ticket": {
+      "ai_tool": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-10-14T20:13:38.615Z",
+  "id": "6j8KAb6yJlR8OKXV",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Agente ZoraBot-Slim",
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -4064,
+        408
+      ],
+      "id": "273fd451-fda7-46ab-a485-23523e987690",
+      "name": "Chat model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yr3Iz6ucK3HOG6Ym",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -3936,
+        408
+      ],
+      "id": "26cf3fae-0659-444f-a9a0-e6d77398158f",
+      "name": "Chat memory",
+      "credentials": {
+        "postgres": {
+          "id": "yzgGanMnEyouiwNc",
+          "name": "Postgres vanilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_chat_session",
+          "mode": "list",
+          "cachedResultName": "n8n_chat_session"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "session_id": "={{ $('datos_iniciales').item.json.sessionId }}",
+            "created_at": "={{ $now.format('y-LL-d H:mm:s') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "session_id",
+              "displayName": "session_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ai_mode",
+              "displayName": "ai_mode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "escalated_at",
+              "displayName": "escalated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "attended_at",
+              "displayName": "attended_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "disabled_at",
+              "displayName": "disabled_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -4960,
+        256
+      ],
+      "id": "319ad7d6-88db-47cc-a1a0-32b547d94a05",
+      "name": "Guarda Sesión",
+      "credentials": {
+        "postgres": {
+          "id": "yzgGanMnEyouiwNc",
+          "name": "Postgres vanilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT EXISTS(\n  SELECT 1 FROM n8n_chat_session WHERE session_id = '{{ $json.sessionId }}'\n) as existe;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -5408,
+        184
+      ],
+      "id": "29ca1063-4fcb-4923-9ca9-30af1cedb7d1",
+      "name": "Consulta sesión",
+      "credentials": {
+        "postgres": {
+          "id": "yzgGanMnEyouiwNc",
+          "name": "Postgres vanilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6d862c96-b154-4a1f-b02a-40a88ed1550e",
+              "leftValue": "={{ $json.existe }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -5184,
+        184
+      ],
+      "id": "ae3d5fcb-330e-4115-bf0a-9334c3c19cb0",
+      "name": "¿Existe sesión?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4bb9e73a-42b0-4abf-8fcd-2beb183925dc",
+              "name": "final_message",
+              "value": "={{ $json.chatInput }}",
+              "type": "string"
+            },
+            {
+              "id": "2d2ccceb-78b2-451d-9c31-8e0914373967",
+              "name": "sessionId",
+              "value": "={{ $json.sessionId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -5632,
+        184
+      ],
+      "id": "fc349115-6527-44f7-b26c-5669079f1b51",
+      "name": "datos_iniciales"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "424f349b-fd64-4dd5-a7d4-0ba5d151cd60",
+              "leftValue": "={{ $json.ai_mode }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -4512,
+        184
+      ],
+      "id": "b9453705-fb76-4e8f-bc96-dfbab1818409",
+      "name": "¿Modo AI?"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={  \"final_message\": \"{{ $('datos_iniciales').item.json.final_message }}\", \"sessionId\": \"{{ $('datos_iniciales').item.json.sessionId }}\", \"fecha\": \"{{ $now.format('y-L-d') }}\", \"hora\": \"{{ $now.format('HH:mm:ss') }}\", \"dia\": \"{{ $now.toString().toDate().toLocaleDateString('es-ES', { weekday: 'long' }) }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -4288,
+        184
+      ],
+      "id": "23ec0a55-3e48-49c8-ba63-7a989efee8ca",
+      "name": "datos"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=## 📅 Contexto adicional del sistema\nMensaje del usuario: \"{{ $json.final_message }}\"  \nHora actual: \"{{ $json.hora }}\"  \nFecha actual: \"{{ $json.fecha }}\"  \nDia actual: \"{{ $json.dia }}\nZona horaria: México (UTC-6)",
+        "options": {
+          "systemMessage": "=## Perfil\n**Nombre:** ZoraBot\n**Empresa:** Zora Systems\n**Rol:** Asistente virtual de soporte general del sistema.  \n**Descripción:**\nBrinda soporte técnico formal, natural y empático a los clientes de Zora Systems.\n---\n## Objetivo\nAyudar al usuario a resolver dudas o incidencias relacionadas con el sistema Zora Systems.\nOfrecer soluciones prácticas, claras y rápidas.\n---\n## Reglas de Comportamiento\n1. Responde siempre en español neutro.\n2. Mantén un tono **formal, natural y empático**, similar al de un chat de whatsapp.  \n3. Prioriza **claridad y precisión**. Usa frases cortas y evita párrafos largos.\n4. Si detectas frustración en el usuario, responde con comprensión y refuerza que estás para ayudar.  \n5. Usa máximo **3 párrafos breves** o **5 líneas** por respuesta.  \n6. Cierre positivo mostrando disposición a seguir ayudando.\n---\n## Formato de Respuesta\n**Estructura recomendada:**\n1. Saludo breve.\n2. Cierre amable.\n3. Usa emojis.\n---\n## Saludo inicial (Usar siempre este formato)\n👋 ¡Hola! Gracias por comunicarte con Soporte Zora Systems.\n¿Podrías confirmarme si ya eres cliente o deseas información sobre el sistema?\nLuego:\n“Perfecto, gracias. Por favor, compártenos tu nombre completo y tu usuario para continuar con tu atención.\"\nLuego:\n\"¿Podrías contarme brevemente tu consulta o problema?”\n---\n## Uso de herramientas\nZoraBot debe usar siempre las herramientas disponibles antes de generar cualquier respuesta por sí mismo. \n---\n## Herramientas disponibles\nFAQ_ZORA: posee una base de conocimientos de problemas comunes y su solución. (Siempre consultas primero esta herramienta)\nManuales_ZORA: posee una base de conocimientos de los manuales de uso para el sistema. (Consultalo si no encontraste una respuesta con la herramienta FAQ_ZORA o si el usuario solicita un manual)\n---\n## Reglas de manejo de errores y reintentos\n1. Si una herramienta o acción produce un error, tienes máximo 2 intentos.\n2. Si el error persiste:   \n- **No vuelvas a intentar.**\n- Responde al usuario: `\"Ocurrió un error, por favor intente más tarde.\"`"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -3944,
+        184
+      ],
+      "id": "8ec2d7a3-15fa-46ef-b3e8-9ad310bf36ac",
+      "name": "ZoraBot"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "chatInput",
+              "type": "any"
+            },
+            {
+              "name": "sessionId",
+              "type": "any"
+            }
+          ]
+        }
+      },
+      "id": "f2e7db8f-a38a-4e27-bc5e-6b62171335a0",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -5856,
+        -144
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -5856,
+        184
+      ],
+      "id": "bee52f01-e7cb-429f-adec-7d53118ad585",
+      "name": "When chat message received",
+      "webhookId": "02a87981-fc7b-4a8d-8d13-e8242937c791"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_chat_session",
+          "mode": "list",
+          "cachedResultName": "n8n_chat_session"
+        },
+        "limit": 1,
+        "where": {
+          "values": [
+            {
+              "column": "session_id",
+              "value": "={{ $('datos_iniciales').item.json.sessionId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -5856,
+        720
+      ],
+      "id": "e7048c2c-5e35-47e8-a3a8-b4b5ccc65dd5",
+      "name": "Consultamos el modo1",
+      "credentials": {
+        "postgres": {
+          "id": "yzgGanMnEyouiwNc",
+          "name": "Postgres vanilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1da5e3cc-5c2a-43cc-8c9a-e6db810fc1cf",
+              "leftValue": "={{ $json.ai_mode }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "96d6a21d-3b8b-4cc3-b2fa-79919fb64e25",
+              "leftValue": "={{ $json.attended_at }}",
+              "rightValue": "",
+              "operator": {
+                "type": "dateTime",
+                "operation": "empty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "0f662d31-358e-42ef-9e57-1797107df6a0",
+              "leftValue": "={{ $json.escalated_at.toDateTime().format('y-LL-d H:mm:s') }}",
+              "rightValue": "={{ $now.format('y-LL-d H:mm:s') }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -5632,
+        720
+      ],
+      "id": "15bb1222-c74f-4236-b7e4-42862ff5d781",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_chat_session",
+          "mode": "list",
+          "cachedResultName": "n8n_chat_session"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ai_mode": 1,
+            "session_id": "={{ $('If').item.json.session_id }}"
+          },
+          "matchingColumns": [
+            "session_id"
+          ],
+          "schema": [
+            {
+              "id": "session_id",
+              "displayName": "session_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ai_mode",
+              "displayName": "ai_mode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "escalated_at",
+              "displayName": "escalated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "attended_at",
+              "displayName": "attended_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "disabled_at",
+              "displayName": "disabled_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -5408,
+        720
+      ],
+      "id": "1ad215ba-5890-415a-a54b-d15a1a3fd4c9",
+      "name": "Activa modo IA",
+      "credentials": {
+        "postgres": {
+          "id": "yzgGanMnEyouiwNc",
+          "name": "Postgres vanilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "no-replay@zorasystems.com",
+        "toEmail": "soporte2@zorasystems.com",
+        "subject": "🤖 ZoraBot retomará ahora la conversación",
+        "html": "=!Excelentes NOTICIAS¡, <br> he sido activado denuevo para la sesion: {{ $json.session_id }} <br>\nPor lo que ahora estaré denuevo de forma automatica ayudando al cliente hasta el momento en que me pida denuevo escalar su problema contigo.",
+        "options": {
+          "ccEmail": "soporte4@zorasystems.com"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        -5184,
+        720
+      ],
+      "id": "b09f0e99-b908-4955-8543-268551e7ab0d",
+      "name": "Send email",
+      "webhookId": "94d907d4-71b2-4248-abb8-9ae2a30f9f79",
+      "credentials": {
+        "smtp": {
+          "id": "rUKtFfERw707Gwsv",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_chat_session",
+          "mode": "list",
+          "cachedResultName": "n8n_chat_session"
+        },
+        "limit": 1,
+        "where": {
+          "values": [
+            {
+              "column": "session_id",
+              "value": "={{ $('datos_iniciales').item.json.sessionId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -4736,
+        184
+      ],
+      "id": "a61c1a2a-7aa1-4a00-9edb-c49a7117b141",
+      "name": "Consultamos el modo",
+      "credentials": {
+        "postgres": {
+          "id": "yzgGanMnEyouiwNc",
+          "name": "Postgres vanilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Llama a esta herramienta cada vez que el cliente te proporcione una consulta o problema desde el input.",
+        "workflowId": {
+          "__rl": true,
+          "value": "GuOSuN7r66C402TZ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/GuOSuN7r66C402TZ",
+          "cachedResultName": "FAQ_Chatbot"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "mensaje": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('mensaje', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "mensaje"
+          ],
+          "schema": [
+            {
+              "id": "mensaje",
+              "displayName": "mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -3808,
+        408
+      ],
+      "id": "d8779673-7e1a-4760-a4a6-1839c6e8ec09",
+      "name": "FAQ_ZORA"
+    },
+    {
+      "parameters": {
+        "description": "Llama a esta herramienta cuando el usuario solicite desde el input un manual o guia del sistema Zora Systems.",
+        "workflowId": {
+          "__rl": true,
+          "value": "hEoEHV51cCMk5wEo",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/hEoEHV51cCMk5wEo",
+          "cachedResultName": "Manuales_ZORA"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "mensaje": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('mensaje', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "mensaje"
+          ],
+          "schema": [
+            {
+              "id": "mensaje",
+              "displayName": "mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -3680,
+        408
+      ],
+      "id": "c4a12e8c-01f3-479e-872d-d84862775540",
+      "name": "Manuales_ZORA"
+    },
+    {
+      "parameters": {
+        "description": "Antes de usar esta herramienta debes preguntarle al cliente si desea \"generar un ticket\", después llama a esta herramienta cuando no hayas encontrado una respuesta clara o el cliente mencione que tus respuestas no lo han ayudado.\nRecibes un input con su problema y lo mandas a esta herramienta.",
+        "workflowId": {
+          "__rl": true,
+          "value": "LEkD7qGxYjoMm1XQ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/LEkD7qGxYjoMm1XQ",
+          "cachedResultName": "Genera Ticket V2"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -5856,
+        512
+      ],
+      "id": "a6f4f080-39f9-46df-8b5f-c272e7335c11",
+      "name": "Genera_Ticket"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "xCJRA",
+    "name": "n8n-backups"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-14T20:13:38.618Z",
+      "updatedAt": "2025-10-14T20:13:38.618Z",
+      "role": "workflow:owner",
+      "workflowId": "6j8KAb6yJlR8OKXV",
+      "projectId": "kp36FybWVj6eVZEB"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-20T13:32:24.000Z",
+  "versionId": "be334be4-fbaf-4eb7-8068-2241e0e10cb6"
+}
