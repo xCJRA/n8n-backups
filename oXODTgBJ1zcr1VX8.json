@@ -1,0 +1,121 @@
+{
+  "active": true,
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Call Agente ZoraBot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-30T00:47:06.916Z",
+  "id": "oXODTgBJ1zcr1VX8",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Prueba soporte",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Gracias por comunicarte con Soporte Zora Systems. 😊\n¿Podrías confirmarme si ya eres cliente o deseas información sobre el sistema?",
+        "options": {
+          "allowedOrigins": "*",
+          "subtitle": "Estoy para ayudarte, con problemas de Zora Systems.",
+          "title": "Hola, Soy ZoraBot! 👋"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -5488,
+        -544
+      ],
+      "id": "d3bd9d78-b139-41aa-83bf-c84221210c9c",
+      "name": "When chat message received",
+      "webhookId": "dcdff4e5-1348-42cf-904d-deb29bf161f7"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "6j8KAb6yJlR8OKXV",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/6j8KAb6yJlR8OKXV",
+          "cachedResultName": "Agente ZoraBot-Slim"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "chatInput": "={{ $json.chatInput }}",
+            "sessionId": "={{ $json.sessionId }}"
+          },
+          "matchingColumns": [
+            "chatInput",
+            "sessionId"
+          ],
+          "schema": [
+            {
+              "id": "chatInput",
+              "displayName": "chatInput",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "sessionId",
+              "displayName": "sessionId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -5264,
+        -544
+      ],
+      "name": "Call Agente ZoraBot",
+      "id": "be3a057e-a70b-41ba-a3a2-619a33b630b6"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "xCJRA",
+    "name": "n8n-backups"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-30T00:47:06.931Z",
+      "updatedAt": "2025-09-30T00:47:06.931Z",
+      "role": "workflow:owner",
+      "workflowId": "oXODTgBJ1zcr1VX8",
+      "projectId": "kp36FybWVj6eVZEB"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-10-19T04:11:51.000Z",
+  "versionId": "8e21d772-aca8-4925-b3ad-58428b3db0cf"
+}
