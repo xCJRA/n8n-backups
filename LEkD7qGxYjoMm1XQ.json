@@ -1,0 +1,438 @@
+{
+  "active": false,
+  "connections": {
+    "Inicio": {
+      "main": [
+        [
+          {
+            "node": "Procesa datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Procesa datos user1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Procesa datos user",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Api Genera Tickets": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procesa datos": {
+      "main": [
+        [
+          {
+            "node": "Api Genera Tickets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procesa datos user": {
+      "main": [
+        [
+          {
+            "node": "TicketOK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procesa datos user1": {
+      "main": [
+        [
+          {
+            "node": "TicketError",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-14T22:00:36.420Z",
+  "id": "LEkD7qGxYjoMm1XQ",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Genera Ticket V2",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "ed88b0fb-88db-4219-9760-d2b6def27b24",
+      "typeVersion": 1.1,
+      "name": "Inicio",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -880,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.auth }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "id": "8812ed02-0d3c-419a-8fde-94c7482cc5c2"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "340c3a9c-2688-47e2-b4cc-03ad30087ff4",
+                    "leftValue": "={{ $json.auth }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "false",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        16,
+        112
+      ],
+      "id": "ab7d8d52-cbe7-44ca-8ad6-51a0a791f554",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "fromEmail": "no-replay@zorasystems.com",
+        "toEmail": "chrisscr1030@gmail.com",
+        "subject": "Se ha generado ticket a soporte.",
+        "html": "=Buen dia,\nSoy ZoraBot, he generado un ticket al área de soporte.\nA continuación, le comparto los detalles.\n<table>\n<thead>\n<th>Nombre</th>\n<th>Correo</th>\n<th>Usuario</th>\n<th>Socnr</th>\n<th>Problema</th>\n</thead>\n<tbody>\n<tr>\n<td>\n {{ $json.nombre }}\n</td>\n<td>\n {{ $json.correoCliente }}\n</td>\n<td>\n {{ $json.usuario }}\n</td>\n<td>\n {{ $json.socnr }}\n</td>\n<td>\n {{ $json.descripcion }}\n</td>\n</tr>\n</tbody>\n</table>",
+        "options": {
+          "ccEmail": "soporte4@zorasystems.com"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        688,
+        16
+      ],
+      "id": "d3ae2fe6-8c01-4502-983f-dfa528fe9c9d",
+      "name": "TicketOK",
+      "webhookId": "150e32b1-8cc9-4688-95f8-c2ec9af0d3d8",
+      "credentials": {
+        "smtp": {
+          "id": "rUKtFfERw707Gwsv",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "no-replay@zorasystems.com",
+        "toEmail": "chrisscr1030@gmail.com",
+        "subject": "Error al generar ticket, desde chatbot",
+        "emailFormat": "text",
+        "text": "=Buen dia,\nSoy ZoraBot, no pude generar un ticket al sistema debido a un error.\nPero te proporciono la información y datos del cliente que atendi.\n<table>\n<thead>\n<th>Nombre</th>\n<th>Correo</th>\n<th>Usuario</th>\n<th>Problema</th>\n</thead>\n<tbody>\n<tr>\n<td>\n {{ $json.nombre }}\n</td>\n<td>\n {{ $json.correoCliente }}\n</td>\n<td>\n {{ $json.usuario }}\n</td>\n<td>\n {{ $json.descripcion }}\n</td>\n</tr>\n</tbody>\n</table>",
+        "options": {
+          "ccEmail": "soporte4@zorasystems.com"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        464,
+        208
+      ],
+      "id": "d9d58128-f28d-41dc-9080-55b718cc7521",
+      "name": "TicketError",
+      "webhookId": "fac3cfeb-8b6d-49b9-a43b-a543ec40430f",
+      "credentials": {
+        "smtp": {
+          "id": "rUKtFfERw707Gwsv",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f626383c-e1d4-4d7e-afe8-768ea49f6a94",
+              "leftValue": "={{ $json.data[0] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        240,
+        16
+      ],
+      "id": "106114ef-1410-46ca-97a1-19038ff42112",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://qas.zorasystems.com/des03/index.php?r=Api/WebHookChatbot",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "username",
+              "value": "0003_APIPROS"
+            },
+            {
+              "name": "password",
+              "value": "6o#3YmSx"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.datos }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -208,
+        112
+      ],
+      "id": "542ae326-08d3-4219-8960-5cbdefb2809c",
+      "name": "Api Genera Tickets"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "de8a0ede-cc3c-416e-810c-7e6c69a4f8b5",
+              "name": "datos",
+              "value": "={{ $json.query }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -576,
+        112
+      ],
+      "id": "64c23067-3e35-4487-9760-c2d8b72c8d23",
+      "name": "Procesa datos"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "38a60714-211b-473a-ba26-18d7a16b782b",
+              "name": "nombre",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().nombre}}",
+              "type": "string"
+            },
+            {
+              "id": "60bd8f0a-3ee0-4d9e-9616-479a38e4c3b7",
+              "name": "usuario",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().usuario}}",
+              "type": "string"
+            },
+            {
+              "id": "fe844caa-9b60-4aa2-a8ba-4376f93d029d",
+              "name": "descripcion",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().descripcion}}",
+              "type": "string"
+            },
+            {
+              "id": "00045037-bc17-4b2a-a5de-9f330114dd9f",
+              "name": "correoCliente",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().correo}}",
+              "type": "string"
+            },
+            {
+              "id": "ec927473-4cc3-457a-8756-e85e6cb10693",
+              "name": "socnr",
+              "value": "={{ $('Api Genera Tickets').item.json.data[0].socnr }}",
+              "type": "string"
+            },
+            {
+              "id": "fe5b76c5-866a-4e15-88c0-baeb4f6b40c2",
+              "name": "idTicket",
+              "value": "={{ $json.data[0].id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        464,
+        16
+      ],
+      "id": "a2f9835a-182d-4974-b9ea-012d27fea7ee",
+      "name": "Procesa datos user"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "38a60714-211b-473a-ba26-18d7a16b782b",
+              "name": "nombre",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().nombre}}",
+              "type": "string"
+            },
+            {
+              "id": "8a4fc883-8843-4060-a3c5-b578b43b2f67",
+              "name": "sociedad",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().sociedad}}",
+              "type": "string"
+            },
+            {
+              "id": "60bd8f0a-3ee0-4d9e-9616-479a38e4c3b7",
+              "name": "usuario",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().usuario}}",
+              "type": "string"
+            },
+            {
+              "id": "fe844caa-9b60-4aa2-a8ba-4376f93d029d",
+              "name": "descripcion",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().descripcion}}",
+              "type": "string"
+            },
+            {
+              "id": "00045037-bc17-4b2a-a5de-9f330114dd9f",
+              "name": "correoCliente",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().correo}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        208
+      ],
+      "id": "3762e7eb-ced1-4b26-9458-c9f2789672b2",
+      "name": "Procesa datos user1"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "xCJRA",
+    "name": "n8n-backups"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-14T22:00:36.424Z",
+      "updatedAt": "2025-10-14T22:00:36.424Z",
+      "role": "workflow:owner",
+      "workflowId": "LEkD7qGxYjoMm1XQ",
+      "projectId": "kp36FybWVj6eVZEB"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-20T05:15:09.000Z",
+  "versionId": "aaab5951-378c-476e-aba7-b4799d35e18f"
+}
