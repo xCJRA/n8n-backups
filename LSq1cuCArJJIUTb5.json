@@ -1,0 +1,72 @@
+{
+  "active": false,
+  "connections": {
+    "Inicio": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-04T23:40:53.689Z",
+  "id": "LSq1cuCArJJIUTb5",
+  "isArchived": true,
+  "meta": null,
+  "name": "Genera Ticket",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "c055762a-8fe7-4141-a639-df2372f30060",
+      "typeVersion": 1.1,
+      "name": "Inicio",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        272,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        352
+      ],
+      "id": "5a7a170d-4fd3-43f7-9fe6-7a0f68900001",
+      "name": "Edit Fields"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "xCJRA",
+    "name": "n8n-backups"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-04T23:40:53.696Z",
+      "updatedAt": "2025-10-04T23:40:53.696Z",
+      "role": "workflow:owner",
+      "workflowId": "LSq1cuCArJJIUTb5",
+      "projectId": "kp36FybWVj6eVZEB"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-06T20:04:45.000Z",
+  "versionId": "5ae60a86-9387-4018-a967-2d716504d1a6"
+}
