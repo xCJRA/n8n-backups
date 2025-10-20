@@ -1,0 +1,442 @@
+{
+  "active": false,
+  "connections": {
+    "Inicio": {
+      "main": [
+        [
+          {
+            "node": "Procesa datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Procesa datos user1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Procesa datos user",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Api Genera Tickets": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procesa datos": {
+      "main": [
+        [
+          {
+            "node": "Api Genera Tickets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procesa datos user": {
+      "main": [
+        [
+          {
+            "node": "TicketOK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procesa datos user1": {
+      "main": [
+        [
+          {
+            "node": "TicketError",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-10T22:50:48.494Z",
+  "id": "qYCC2vj6exyHOzyi",
+  "isArchived": false,
+  "meta": null,
+  "name": "Genera Ticket",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "2a4a2dd0-bf9f-4bcd-bf64-9f47920a2d27",
+      "typeVersion": 1.1,
+      "name": "Inicio",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -816,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.auth }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "id": "8812ed02-0d3c-419a-8fde-94c7482cc5c2"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "340c3a9c-2688-47e2-b4cc-03ad30087ff4",
+                    "leftValue": "={{ $json.auth }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "false",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -144,
+        224
+      ],
+      "id": "feafc15b-8e95-4fb4-8b59-1536a8286e09",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "fromEmail": "no-replay@zorasystems.com",
+        "toEmail": "soporte2@zorasystems.com",
+        "subject": "Se ha generado ticket a soporte.",
+        "html": "=Buen dia,\nSoy ZoraBot, he generado un ticket al área de soporte.\nA continuación, le comparto los detalles.\n<table>\n<thead>\n<th>Nombre</th>\n<th>Correo</th>\n<th>Usuario</th>\n<th>Socnr</th>\n<th>Problema</th>\n</thead>\n<tbody>\n<tr>\n<td>\n {{ $json.nombre }}\n</td>\n<td>\n {{ $json.correoCliente }}\n</td>\n<td>\n {{ $json.usuario }}\n</td>\n<td>\n {{ $json.socnr }}\n</td>\n<td>\n {{ $json.descripcion }}\n</td>\n</tr>\n</tbody>\n</table>",
+        "options": {
+          "ccEmail": "soporte4@zorasystems.com"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        496,
+        144
+      ],
+      "id": "d72ae3dc-f551-4cae-b0d3-3f92d719fd03",
+      "name": "TicketOK",
+      "webhookId": "c6759fe1-1fe6-4b45-b983-0d3706be1cf5",
+      "credentials": {
+        "smtp": {
+          "id": "rUKtFfERw707Gwsv",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "no-replay@zorasystems.com",
+        "toEmail": "soporte2@zorasystems.com",
+        "subject": "Error al generar ticket, desde chatbot",
+        "emailFormat": "text",
+        "text": "=Buen dia,\nSoy ZoraBot, no pude generar un ticket al sistema debido a un error.\nPero te proporciono la información y datos del cliente que atendi.\n<table>\n<thead>\n<th>Nombre</th>\n<th>Correo</th>\n<th>Usuario</th>\n<th>Socnr</th>\n<th>Problema</th>\n</thead>\n<tbody>\n<tr>\n<td>\n {{ $json.nombre }}\n</td>\n<td>\n {{ $json.correoCliente }}\n</td>\n<td>\n {{ $json.usuario }}\n</td>\n<td>\n {{ $json.socnr }}\n</td>\n<td>\n {{ $json.descripcion }}\n</td>\n</tr>\n</tbody>\n</table>",
+        "options": {
+          "ccEmail": "soporte4@zorasystems.com"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        304,
+        320
+      ],
+      "id": "93403904-2b16-4c62-a8d2-2c7c4f614192",
+      "name": "TicketError",
+      "webhookId": "b4299375-8328-429a-b740-1b0f737beca2",
+      "credentials": {
+        "smtp": {
+          "id": "rUKtFfERw707Gwsv",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f626383c-e1d4-4d7e-afe8-768ea49f6a94",
+              "leftValue": "={{ $json.data[0] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        80,
+        80
+      ],
+      "id": "8d02d40c-4548-4c0b-95e7-8f1f9f516391",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://qas.zorasystems.com/des03/index.php?r=Api/WebHookChatbot",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "username",
+              "value": "0003_APIPROS"
+            },
+            {
+              "name": "password",
+              "value": "6o#3YmSx"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.datos }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -368,
+        224
+      ],
+      "id": "70e6f69d-93df-4583-a54d-cd69b25f1b5b",
+      "name": "Api Genera Tickets"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e4db6e05-cc39-4be7-af0e-844b78a3c937",
+              "name": "datos",
+              "value": "={{ $json.query }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -592,
+        224
+      ],
+      "id": "83e830ec-63fa-474e-a5a9-c510323dec61",
+      "name": "Procesa datos"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "38a60714-211b-473a-ba26-18d7a16b782b",
+              "name": "nombre",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().nombre}}",
+              "type": "string"
+            },
+            {
+              "id": "8a4fc883-8843-4060-a3c5-b578b43b2f67",
+              "name": "sociedad",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().sociedad}}",
+              "type": "string"
+            },
+            {
+              "id": "60bd8f0a-3ee0-4d9e-9616-479a38e4c3b7",
+              "name": "usuario",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().usuario}}",
+              "type": "string"
+            },
+            {
+              "id": "fe844caa-9b60-4aa2-a8ba-4376f93d029d",
+              "name": "descripcion",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().descripcion}}",
+              "type": "string"
+            },
+            {
+              "id": "160fbbff-3f0e-4162-a53c-9eaad1017aaf",
+              "name": "socnr",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().socnr}}",
+              "type": "string"
+            },
+            {
+              "id": "00045037-bc17-4b2a-a5de-9f330114dd9f",
+              "name": "correoCliente",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().correo}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        288,
+        64
+      ],
+      "id": "f2a0b5d9-3ab7-402e-a9f6-b1c6472dc3f5",
+      "name": "Procesa datos user"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "38a60714-211b-473a-ba26-18d7a16b782b",
+              "name": "nombre",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().nombre}}",
+              "type": "string"
+            },
+            {
+              "id": "8a4fc883-8843-4060-a3c5-b578b43b2f67",
+              "name": "sociedad",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().sociedad}}",
+              "type": "string"
+            },
+            {
+              "id": "60bd8f0a-3ee0-4d9e-9616-479a38e4c3b7",
+              "name": "usuario",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().usuario}}",
+              "type": "string"
+            },
+            {
+              "id": "fe844caa-9b60-4aa2-a8ba-4376f93d029d",
+              "name": "descripcion",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().descripcion}}",
+              "type": "string"
+            },
+            {
+              "id": "160fbbff-3f0e-4162-a53c-9eaad1017aaf",
+              "name": "socnr",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().socnr}}",
+              "type": "string"
+            },
+            {
+              "id": "00045037-bc17-4b2a-a5de-9f330114dd9f",
+              "name": "correoCliente",
+              "value": "={{ $('Procesa datos').item.json.datos.parseJson().correo}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        320
+      ],
+      "id": "01bbf06c-22d9-41cc-a73a-6ec8fafd988b",
+      "name": "Procesa datos user1"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "xCJRA",
+    "name": "n8n-backups"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-10T22:50:48.497Z",
+      "updatedAt": "2025-10-10T22:50:48.497Z",
+      "role": "workflow:owner",
+      "workflowId": "qYCC2vj6exyHOzyi",
+      "projectId": "kp36FybWVj6eVZEB"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-19T04:12:11.000Z",
+  "versionId": "01561f2b-f484-43ce-982d-4435c78885fa"
+}
