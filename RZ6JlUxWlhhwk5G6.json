@@ -1,0 +1,518 @@
+{
+  "active": false,
+  "connections": {
+    "Procesa datos": {
+      "main": [
+        [
+          {
+            "node": "Notifica a soporte",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Procesa datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica a soporte": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Procesa datos1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Escala solamente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procesa datos1": {
+      "main": [
+        [
+          {
+            "node": "Activa modo humano",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Activa modo humano": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-10-11T00:28:02.215Z",
+  "id": "RZ6JlUxWlhhwk5G6",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Modo_humano",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6c5ed3fe-2de5-4fcf-a04b-52d57d484e39",
+              "leftValue": "={{ $json.session_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3168,
+        -384
+      ],
+      "id": "0ceb3908-05c6-4516-adbf-b0f1939bc0b1",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "fromEmail": "no-replay@zorasystems.com",
+        "toEmail": "soporte2@zorasystems.com,soporte4@zorasystems.com",
+        "subject": "🚨 Escalación de caso: ZoraBot no pudo resolver la solicitud del cliente.",
+        "message": "=<p>Buen dia,\nNo pude ayudar al cliente con su caso por lo que pido tu ayuda para atender este chat porfavor.\nA continuación te muestro los datos de esta conversación.</p>\n<table>\n<thead>\n<th>Sesión id</th>\n<th>Ultimo mensaje </th>\n</thead>\n<tbody>\n<tr>\n<td>{{ $json.session_id }}</td>\n<td>{{ $json.final_message }}</td>\n</tr>\n</tbody>\n</table>\n<p>\n<strong> Nota: </strong> la session id\nes muy importante, una vez que acabes con el chat necesito que vuelvas a actualizar el \"modo\" en automatico para que pueda volver a atender al cliente en un futuro.\n<a href=\"https://n8n.srv1030836.hstgr.cloud/form/d293a9de-a6ab-4091-a7e9-1b8ec4cdf0cd\" > Click aqui para volver a activarme </a>\n</p>\n<p> <strong> Muchas gracias por tu atención </strong> </p>",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double",
+            "approveLabel": "Tomar control",
+            "disapproveLabel": "Cancelar"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        -2608,
+        -464
+      ],
+      "id": "07438f11-851d-46b8-885c-8d051fb45ab7",
+      "name": "Notifica a soporte",
+      "webhookId": "752c9e16-b5d4-4731-871e-ffca1ac8fa5d",
+      "credentials": {
+        "smtp": {
+          "id": "rUKtFfERw707Gwsv",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dfdfad1d-c7e9-499b-9c94-4ba23a146453",
+              "name": "session_id",
+              "value": "={{ $json.session_id }}",
+              "type": "string"
+            },
+            {
+              "id": "b81fc442-8975-4deb-aafb-28f39230ff0c",
+              "name": "final_message",
+              "value": "={{ $json.final_message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2832,
+        -400
+      ],
+      "id": "3613edc7-33a3-47a5-8f32-df976605db52",
+      "name": "Procesa datos"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "session_id"
+            },
+            {
+              "name": "final_message"
+            }
+          ]
+        }
+      },
+      "id": "98aef2f9-da54-4aaa-8839-0218b52cf6fd",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -3408,
+        -384
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ed0d3677-ee50-4f9a-8cd2-2584ae31b96b",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2368,
+        -400
+      ],
+      "id": "7e24451e-2d53-4c17-a680-ff8db3e81b4b",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dfdfad1d-c7e9-499b-9c94-4ba23a146453",
+              "name": "session_id",
+              "value": "={{ $('Procesa datos').item.json.session_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2176,
+        -512
+      ],
+      "id": "9a6e096e-29da-43ce-9fa5-2f836e9dbd7d",
+      "name": "Procesa datos1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_chat_session",
+          "mode": "list",
+          "cachedResultName": "n8n_chat_session"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ai_mode": 0,
+            "session_id": "={{ $('If').item.json.session_id }}",
+            "escalated_at": "={{ $now.format('y-LL-d H:mm:s') }}"
+          },
+          "matchingColumns": [
+            "session_id"
+          ],
+          "schema": [
+            {
+              "id": "session_id",
+              "displayName": "session_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ai_mode",
+              "displayName": "ai_mode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "escalated_at",
+              "displayName": "escalated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "attended_at",
+              "displayName": "attended_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "disabled_at",
+              "displayName": "disabled_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -2128,
+        -336
+      ],
+      "id": "273d5374-8fc7-437d-8e0e-1444956cc2ad",
+      "name": "Escala solamente",
+      "credentials": {
+        "postgres": {
+          "id": "yzgGanMnEyouiwNc",
+          "name": "Postgres vanilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_chat_session",
+          "mode": "list",
+          "cachedResultName": "n8n_chat_session"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ai_mode": 0,
+            "session_id": "={{ $('If').item.json.session_id }}",
+            "attended_at": "={{ $now.format('y-LL-d H:mm:s') }}",
+            "escalated_at": "={{ $now.format('y-LL-d H:mm:s') }}"
+          },
+          "matchingColumns": [
+            "session_id"
+          ],
+          "schema": [
+            {
+              "id": "session_id",
+              "displayName": "session_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ai_mode",
+              "displayName": "ai_mode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "escalated_at",
+              "displayName": "escalated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "attended_at",
+              "displayName": "attended_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "disabled_at",
+              "displayName": "disabled_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1968,
+        -512
+      ],
+      "id": "b7d1a20e-a634-4964-aa5a-bf5e7e6257a3",
+      "name": "Activa modo humano",
+      "credentials": {
+        "postgres": {
+          "id": "yzgGanMnEyouiwNc",
+          "name": "Postgres vanilla"
+        }
+      }
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Start": [
+      {
+        "json": {
+          "session_id": "12345-asdAG123##123123",
+          "final_message": "hola que hace"
+        }
+      }
+    ],
+    "Notifica a soporte": [
+      {
+        "json": {
+          "data": {
+            "approved": false
+          }
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "xCJRA",
+    "name": "n8n-backups"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-11T00:28:02.226Z",
+      "updatedAt": "2025-10-11T00:28:02.226Z",
+      "role": "workflow:owner",
+      "workflowId": "RZ6JlUxWlhhwk5G6",
+      "projectId": "kp36FybWVj6eVZEB"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-19T04:12:33.000Z",
+  "versionId": "e8e3c321-5f8b-4a10-8a82-ffa7418fd4fd"
+}
