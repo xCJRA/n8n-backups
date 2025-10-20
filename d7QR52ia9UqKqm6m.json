@@ -1,0 +1,180 @@
+{
+  "active": false,
+  "connections": {
+    "Activa modo IA": {
+      "main": [
+        [
+          {
+            "node": "Notifica a soporte",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inicio": {
+      "main": [
+        [
+          {
+            "node": "Procesa datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procesa datos": {
+      "main": [
+        [
+          {
+            "node": "Activa modo IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-10T23:10:59.376Z",
+  "id": "d7QR52ia9UqKqm6m",
+  "isArchived": true,
+  "meta": null,
+  "name": "Modo humano",
+  "nodes": [
+    {
+      "parameters": {
+        "fromEmail": "no-replay@zorasystems.com",
+        "toEmail": "soporte4@zorasystems.com",
+        "subject": "🚨 Escalación de caso: ZoraBot no pudo resolver la solicitud del cliente.",
+        "html": "=<p>Buen dia,\nNo pude ayudar al cliente con su caso por lo que pido tu ayuda para atender este chat porfavor.\nA continuación te muestro los datos de esta conversación.</p>\n<table>\n<thead>\n<th>Sesión id</th>\n<th>Número celular </th>\n<th>Ultimo mensaje </th>\n</thead>\n<tbody>\n<tr>\n<td>{{ $json.session_id }}</td>\n<td>5543124785</td>\n<td>{{ $('text_message').item.json.final_message }}</td>\n</tr>\n</tbody>\n</table>\n<p>\n<strong> Nota: </strong> la session id\nes muy importante, una vez que acabes con el chat necesito que vuelvas a actualizar el \"modo\" en automatico para que pueda volver a atender al cliente en un futuro.\n<a href=\"https://n8n.srv1030836.hstgr.cloud/form/d293a9de-a6ab-4091-a7e9-1b8ec4cdf0cd\" > Click aqui para volver a activarme </a>\n</p>\n<p> <strong> Muchas gracias por tu atención </strong> </p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        800,
+        0
+      ],
+      "id": "4fed81ce-bf09-4ca5-9f86-c7be771f1fd8",
+      "name": "Notifica a soporte",
+      "webhookId": "752c9e16-b5d4-4731-871e-ffca1ac8fa5d",
+      "credentials": {
+        "smtp": {
+          "id": "rUKtFfERw707Gwsv",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_chat_session",
+          "mode": "list",
+          "cachedResultName": "n8n_chat_session"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ai_mode": false,
+            "session_id": "={{ $('If').item.json.session_id }}"
+          },
+          "matchingColumns": [
+            "session_id"
+          ],
+          "schema": [
+            {
+              "id": "session_id",
+              "displayName": "session_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ai_mode",
+              "displayName": "ai_mode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        512,
+        0
+      ],
+      "id": "d613296d-48ce-475c-9c2a-b2ca35c28f7d",
+      "name": "Activa modo IA",
+      "credentials": {
+        "postgres": {
+          "id": "cT3GdILZFSf6EXss",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6eaffd43-269e-47fa-b1a8-d16a5632f14c",
+      "name": "Inicio"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        256,
+        0
+      ],
+      "id": "6bb31f2f-6de4-4eb7-81a5-79bcc650a63a",
+      "name": "Procesa datos"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "xCJRA",
+    "name": "n8n-backups"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-10T23:10:59.379Z",
+      "updatedAt": "2025-10-10T23:10:59.379Z",
+      "role": "workflow:owner",
+      "workflowId": "d7QR52ia9UqKqm6m",
+      "projectId": "kp36FybWVj6eVZEB"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-11T00:03:18.000Z",
+  "versionId": "22bb5972-a696-4b33-b101-34f062b3ff7a"
+}
