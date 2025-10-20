@@ -1,0 +1,201 @@
+{
+  "active": false,
+  "connections": {
+    "extrae mensaje": {
+      "main": [
+        [
+          {
+            "node": "Manuales_ZORA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "extrae mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manuales_ZORA": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-17T21:24:38.355Z",
+  "id": "hEoEHV51cCMk5wEo",
+  "isArchived": false,
+  "meta": null,
+  "name": "Manuales_ZORA",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "mensaje"
+            }
+          ]
+        }
+      },
+      "id": "eecef0ac-89f6-4263-b56a-9fe619e9a6d6",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -4560,
+        -256
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2587eee6-fc65-4bec-a1f8-34202b43fd1e",
+              "name": "mensaje",
+              "value": "={{ $json.mensaje }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -4112,
+        -272
+      ],
+      "id": "dee7dd56-e90b-4b07-8daf-6fa98d3b5f77",
+      "name": "extrae mensaje"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1293fb0c-63b8-49a2-86b5-b28ada18df5e",
+              "leftValue": "={{ $json.mensaje }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -4336,
+        -256
+      ],
+      "id": "bcddc8ea-0ad4-4838-bd2e-d74cdb526869",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener la consulta del usuario\nconst userQuery = $('extrae mensaje').first().json.mensaje.toLowerCase();\n\n// Obtener datos del Google Sheets\nconst faqData = $input.all();\n\n// Validar que hay datos\nif (!faqData || faqData.length === 0) {\n  return {\n    json: {\n      found: false,\n      confidence: 0,\n      pregunta: '',\n      respuesta: 'No hay preguntas frecuentes disponibles en este momento.',\n      score: 0\n    }\n  };\n}\n\n// Función para calcular similitud básica\nfunction calculateSimilarity(str1, str2) {\n  // Validar strings vacíos\n  if (!str1 || !str2) return 0;\n  \n  const words1 = str1.toLowerCase().split(/\\s+/).filter(w => w.length > 0);\n  const words2 = str2.toLowerCase().split(/\\s+/).filter(w => w.length > 0);\n  \n  // Evitar división por cero\n  if (words1.length === 0 || words2.length === 0) return 0;\n  \n  let matches = 0;\n  words1.forEach(word => {\n    if (words2.includes(word) && word.length > 3) {\n      matches++;\n    }\n  });\n  \n  return matches / Math.max(words1.length, words2.length);\n}\n\n// Buscar mejor coincidencia\nlet bestMatch = null;\nlet bestScore = 0;\n\nfaqData.forEach(row => {\n  const pregunta = row.json.descripcion || '';\n  // Saltar filas vacías\n  if (!pregunta) return;\n  // Calcular similitud solo con la pregunta\n  const score = calculateSimilarity(userQuery, pregunta);\n  \n  if (score > bestScore) {\n    bestScore = score;\n    bestMatch = row.json;\n  }\n});\n\n// Retornar resultado\nreturn {\n  json: {\n    found: bestScore > 0.3, // Umbral de confianza\n    confidence: Math.round(bestScore * 100) / 100,\n    preguntaEncontrada: bestMatch?.descripcion || '',\n    respuesta: bestMatch?.url || 'No encontré un manual relacionado disculpa.',\n    score: bestScore\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3664,
+        -272
+      ],
+      "id": "617ba915-c971-47cb-9854-28e2297d5807",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1PXV_aW-UbS9ZzmI0_8gbkM-eQWl-YkxMwTQ1Id3ogug",
+          "mode": "list",
+          "cachedResultName": "Biblioteca_ZORA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PXV_aW-UbS9ZzmI0_8gbkM-eQWl-YkxMwTQ1Id3ogug/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Manuales_ZORA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PXV_aW-UbS9ZzmI0_8gbkM-eQWl-YkxMwTQ1Id3ogug/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -3888,
+        -272
+      ],
+      "id": "b9a4cd3b-4c79-4932-a064-5b8e51a59b35",
+      "name": "Manuales_ZORA",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bDDqXwi2snLb0mqD",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "xCJRA",
+    "name": "n8n-backups"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-17T21:24:38.364Z",
+      "updatedAt": "2025-10-17T21:24:38.364Z",
+      "role": "workflow:owner",
+      "workflowId": "hEoEHV51cCMk5wEo",
+      "projectId": "kp36FybWVj6eVZEB"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-19T06:23:05.000Z",
+  "versionId": "200eb4ab-5909-4a6b-a321-36bfe40dfb9a"
+}
