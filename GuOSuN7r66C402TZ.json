@@ -1,0 +1,211 @@
+{
+  "active": false,
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "extrae mensaje": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "extrae mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-17T20:06:46.036Z",
+  "id": "GuOSuN7r66C402TZ",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "FAQ_Chatbot",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "mensaje"
+            }
+          ]
+        }
+      },
+      "id": "b9a75758-ccad-4c8e-8c68-9e5f6d4330fb",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -3664,
+        -576
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2587eee6-fc65-4bec-a1f8-34202b43fd1e",
+              "name": "mensaje",
+              "value": "={{ $json.mensaje }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3216,
+        -592
+      ],
+      "id": "9d7bd439-e474-47a3-bf8e-434df0bae240",
+      "name": "extrae mensaje"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1293fb0c-63b8-49a2-86b5-b28ada18df5e",
+              "leftValue": "={{ $json.mensaje }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3440,
+        -576
+      ],
+      "id": "9189e9ea-fa98-431e-bbe7-92675028afc1",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1kljMNgFldFkD6YaIRDcvfbK61OiPimGXhTp_KTrxPeI",
+          "mode": "list",
+          "cachedResultName": "FAQ_Chatbot",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kljMNgFldFkD6YaIRDcvfbK61OiPimGXhTp_KTrxPeI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "FAQ_Chatbot",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kljMNgFldFkD6YaIRDcvfbK61OiPimGXhTp_KTrxPeI/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2992,
+        -592
+      ],
+      "id": "ac32ca09-8279-4cfb-8740-2a71b7261639",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bDDqXwi2snLb0mqD",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener la consulta del usuario\nconst userQuery = $('extrae mensaje').first().json.mensaje.toLowerCase();\n\n// Obtener datos del Google Sheets\nconst faqData = $input.all();\n\n// Validar que hay datos\nif (!faqData || faqData.length === 0) {\n  return {\n    json: {\n      found: false,\n      confidence: 0,\n      pregunta: '',\n      respuesta: 'No hay preguntas frecuentes disponibles en este momento.',\n      score: 0\n    }\n  };\n}\n\n// Función para calcular similitud básica\nfunction calculateSimilarity(str1, str2) {\n  // Validar strings vacíos\n  if (!str1 || !str2) return 0;\n  \n  const words1 = str1.toLowerCase().split(/\\s+/).filter(w => w.length > 0);\n  const words2 = str2.toLowerCase().split(/\\s+/).filter(w => w.length > 0);\n  \n  // Evitar división por cero\n  if (words1.length === 0 || words2.length === 0) return 0;\n  \n  let matches = 0;\n  words1.forEach(word => {\n    if (words2.includes(word) && word.length > 3) {\n      matches++;\n    }\n  });\n  \n  return matches / Math.max(words1.length, words2.length);\n}\n\n// Buscar mejor coincidencia\nlet bestMatch = null;\nlet bestScore = 0;\n\nfaqData.forEach(row => {\n  // ✅ Solo usar columna Pregunta\n  const pregunta = row.json.Pregunta || '';\n  \n  // Saltar filas vacías\n  if (!pregunta) return;\n  \n  // Calcular similitud solo con la pregunta\n  const score = calculateSimilarity(userQuery, pregunta);\n  \n  if (score > bestScore) {\n    bestScore = score;\n    bestMatch = row.json;\n  }\n});\n\n// Retornar resultado\nreturn {\n  json: {\n    found: bestScore > 0.3, // Umbral de confianza\n    confidence: Math.round(bestScore * 100) / 100,\n    preguntaEncontrada: bestMatch?.Pregunta || '',\n    respuesta: bestMatch?.Respuesta || 'No encontré una respuesta para tu consulta. ¿Puedo ayudarte de otra manera?',\n    score: bestScore\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2768,
+        -592
+      ],
+      "id": "9bb8fa90-fb67-4333-9883-c8fce323c8ad",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Start": [
+      {
+        "json": {
+          "mensaje": "usuario inactivo"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "xCJRA",
+    "name": "n8n-backups"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-17T20:06:46.043Z",
+      "updatedAt": "2025-10-17T20:06:46.043Z",
+      "role": "workflow:owner",
+      "workflowId": "GuOSuN7r66C402TZ",
+      "projectId": "kp36FybWVj6eVZEB"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-19T04:13:19.000Z",
+  "versionId": "46be395a-11df-4873-a06f-2bede70daa74"
+}
