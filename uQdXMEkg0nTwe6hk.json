@@ -293,11 +293,6 @@
       "main": [
         [
           {
-            "node": "Workflows",
-            "type": "main",
-            "index": 0
-          },
-          {
             "node": "n8n",
             "type": "main",
             "index": 0
@@ -345,7 +340,7 @@
   "meta": {
     "templateId": "5898"
   },
-  "name": "Automated n8n Workflow Backup to GitHub with Deletion Tracking",
+  "name": "Backup",
   "nodes": [
     {
       "parameters": {},
@@ -1134,7 +1129,7 @@
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         768,
-        240
+        256
       ],
       "typeVersion": 1
     },
@@ -1174,6 +1169,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-10-20T13:51:23.000Z",
-  "versionId": "fa87b7af-2f13-4639-adfc-b689b5b41da5"
+  "updatedAt": "2025-10-20T13:53:56.000Z",
+  "versionId": "a4c344f8-c5f6-4b77-8bf6-fb890bca4677"
 }
