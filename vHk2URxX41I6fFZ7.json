@@ -371,10 +371,10 @@
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "6j8KAb6yJlR8OKXV",
+          "value": "4U0imqs3OkfXRstS",
           "mode": "list",
-          "cachedResultUrl": "/workflow/6j8KAb6yJlR8OKXV",
-          "cachedResultName": "Agente ZoraBot-Slim"
+          "cachedResultUrl": "/workflow/4U0imqs3OkfXRstS",
+          "cachedResultName": "Zora-Slim"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -471,6 +471,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-19T04:11:41.000Z",
-  "versionId": "27566153-33f5-48e3-9ca5-61fd03b05d5e"
+  "updatedAt": "2025-10-20T15:25:51.000Z",
+  "versionId": "264f1135-bc20-4158-ac7f-19db57915ffc"
 }
