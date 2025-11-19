@@ -130,7 +130,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Obtener la consulta del usuario\nconst userQuery = $('extrae mensaje').first().json.mensaje.toLowerCase();\n\n// Obtener datos del Google Sheets\nconst faqData = $input.all();\n\n// Validar que hay datos\nif (!faqData || faqData.length === 0) {\n  return {\n    json: {\n      found: false,\n      confidence: 0,\n      pregunta: '',\n      respuesta: 'No hay preguntas frecuentes disponibles en este momento.',\n      score: 0\n    }\n  };\n}\n\n// Función para calcular similitud básica\nfunction calculateSimilarity(str1, str2) {\n  // Validar strings vacíos\n  if (!str1 || !str2) return 0;\n  \n  const words1 = str1.toLowerCase().split(/\\s+/).filter(w => w.length > 0);\n  const words2 = str2.toLowerCase().split(/\\s+/).filter(w => w.length > 0);\n  \n  // Evitar división por cero\n  if (words1.length === 0 || words2.length === 0) return 0;\n  \n  let matches = 0;\n  words1.forEach(word => {\n    if (words2.includes(word) && word.length > 3) {\n      matches++;\n    }\n  });\n  \n  return matches / Math.max(words1.length, words2.length);\n}\n\n// Buscar mejor coincidencia\nlet bestMatch = null;\nlet bestScore = 0;\n\nfaqData.forEach(row => {\n  const pregunta = row.json.descripcion || '';\n  // Saltar filas vacías\n  if (!pregunta) return;\n  // Calcular similitud solo con la pregunta\n  const score = calculateSimilarity(userQuery, pregunta);\n  \n  if (score > bestScore) {\n    bestScore = score;\n    bestMatch = row.json;\n  }\n});\n\n// Retornar resultado\nreturn {\n  json: {\n    found: bestScore > 0.3, // Umbral de confianza\n    confidence: Math.round(bestScore * 100) / 100,\n    preguntaEncontrada: bestMatch?.descripcion || '',\n    respuesta: bestMatch?.url || 'No encontré un manual relacionado disculpa.',\n    score: bestScore\n  }\n};"
+        "jsCode": "// Obtener la consulta del usuario\nconst userQuery = $('extrae mensaje').first().json.mensaje;\n\n// Obtener datos del Google Sheets\nconst faqData = $input.all();\n\n// Validar que hay datos\nif (!faqData || faqData.length === 0) {\n  return {\n    json: {\n      found: false,\n      confidence: 0,\n      pregunta: '',\n      respuesta: 'No hay preguntas frecuentes disponibles en este momento.',\n      score: 0\n    }\n  };\n}\n\n// Función para calcular similitud básica\nfunction calculateSimilarity(str1, str2, options = {}) {\n  // Configuración por defecto\n  const {\n    minWordLength = 3,\n    caseSensitive = false\n  } = options;\n  \n  // Validar tipos y strings vacíos\n  if (typeof str1 !== 'string' || typeof str2 !== 'string') {\n    throw new TypeError('Ambos argumentos deben ser strings');\n  }\n  \n  if (!str1 || !str2) return 0;\n  \n  // Normalizar strings\n  const normalizedStr1 = caseSensitive ? str1 : str1.toLowerCase();\n  const normalizedStr2 = caseSensitive ? str2 : str2.toLowerCase();\n  \n  // Tokenizar y filtrar palabras\n  const words1 = normalizedStr1\n    .split(/\\s+/)\n    .filter(word => word.length > minWordLength);\n  \n  const words2 = normalizedStr2\n    .split(/\\s+/)\n    .filter(word => word.length > minWordLength);\n  \n  // Evitar división por cero\n  if (words1.length === 0 || words2.length === 0) return 0;\n  \n  // Usar Set para búsquedas más eficientes O(1) en lugar de O(n)\n  const words2Set = new Set(words2);\n  \n  // Contar coincidencias únicas\n  const uniqueMatches = new Set(\n    words1.filter(word => words2Set.has(word))\n  );\n  \n  const matches = uniqueMatches.size;\n  \n  // Calcular similitud (Jaccard-like pero usando max en lugar de unión)\n  return matches / Math.max(words1.length, words2.length);\n}\n// Buscar mejor coincidencia\nlet bestMatch = null;\nlet bestScore = 0;\n\nfaqData.forEach(row => {\n  const pregunta = row.json.descripcion || '';\n  // Saltar filas vacías\n  if (!pregunta) return;\n  // Calcular similitud solo con la pregunta\n  const score = calculateSimilarity(userQuery, pregunta);\n  \n  if (score > bestScore) {\n    bestScore = score;\n    bestMatch = row.json;\n  }\n});\n\n// Retornar resultado\nreturn {\n  json: {\n    found: bestScore > 0.3, // Umbral de confianza\n    confidence: Math.round(bestScore * 100) / 100,\n    preguntaEncontrada: bestMatch?.descripcion || '',\n    respuesta: bestMatch?.url || 'No encontré un manual relacionado disculpa.',\n    score: bestScore\n  }\n};"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -176,7 +176,15 @@
     }
   ],
   "origin": "n8n",
-  "pinData": {},
+  "pinData": {
+    "Start": [
+      {
+        "json": {
+          "mensaje": "crear un contrato en el sistema Zora Systems"
+        }
+      }
+    ]
+  },
   "repo": {
     "owner": "xCJRA",
     "name": "n8n-backups"
@@ -196,6 +204,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-10-19T06:23:05.000Z",
-  "versionId": "200eb4ab-5909-4a6b-a321-36bfe40dfb9a"
+  "updatedAt": "2025-10-23T18:26:11.000Z",
+  "versionId": "20d99aff-928b-4d23-8c9e-1d07cdda85eb"
 }
