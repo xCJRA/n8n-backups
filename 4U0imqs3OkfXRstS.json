@@ -1,28 +1,8 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
-    "Chat model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "ZoraBot",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Chat memory": {
-      "ai_memory": [
-        [
-          {
-            "node": "ZoraBot",
-            "type": "ai_memory",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Guarda Sesión": {
       "main": [
         [
@@ -98,37 +78,9 @@
     },
     "When chat message received": {
       "main": [
-        []
-      ]
-    },
-    "Consultamos el modo1": {
-      "main": [
         [
           {
-            "node": "If",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If": {
-      "main": [
-        [],
-        [
-          {
-            "node": "Activa modo IA",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Activa modo IA": {
-      "main": [
-        [
-          {
-            "node": "Send email",
+            "node": "datos_iniciales",
             "type": "main",
             "index": 0
           }
@@ -144,6 +96,11 @@
             "index": 0
           }
         ]
+      ]
+    },
+    "Start": {
+      "main": [
+        []
       ]
     },
     "FAQ_ZORA": {
@@ -168,28 +125,34 @@
         ]
       ]
     },
-    "Genera_Ticket": {
-      "ai_tool": [
-        []
-      ]
-    },
-    "Pensar": {
-      "ai_tool": [
+    "Agente IA": {
+      "ai_languageModel": [
         [
           {
             "node": "ZoraBot",
-            "type": "ai_tool",
+            "type": "ai_languageModel",
             "index": 0
           }
         ]
       ]
     },
-    "Start": {
-      "main": [
+    "Memoria": {
+      "ai_memory": [
         [
           {
-            "node": "datos_iniciales",
-            "type": "main",
+            "node": "ZoraBot",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Modo_humano": {
+      "ai_tool": [
+        [
+          {
+            "node": "ZoraBot",
+            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -200,50 +163,8 @@
   "id": "4U0imqs3OkfXRstS",
   "isArchived": false,
   "meta": null,
-  "name": "Zora-Slim",
+  "name": "ZoraBot",
   "nodes": [
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "gpt-4o-mini",
-          "mode": "list",
-          "cachedResultName": "gpt-4o-mini"
-        },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.2,
-      "position": [
-        1520,
-        384
-      ],
-      "id": "47ad616b-aa3a-4b0d-bc4e-b6e6282a5954",
-      "name": "Chat model",
-      "credentials": {
-        "openAiApi": {
-          "id": "Yr3Iz6ucK3HOG6Ym",
-          "name": "OpenAi account"
-        }
-      }
-    },
-    {
-      "parameters": {},
-      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
-      "typeVersion": 1.3,
-      "position": [
-        1664,
-        432
-      ],
-      "id": "76cc8c53-5535-40a2-b9fc-99aef58b1191",
-      "name": "Chat memory",
-      "credentials": {
-        "postgres": {
-          "id": "yzgGanMnEyouiwNc",
-          "name": "Postgres vanilla"
-        }
-      }
-    },
     {
       "parameters": {
         "schema": {
@@ -333,8 +254,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        752,
-        352
+        608,
+        496
       ],
       "id": "d04b24df-fcd1-4f44-b63c-45b70824bdd9",
       "name": "Guarda Sesión",
@@ -354,8 +275,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        304,
-        256
+        128,
+        352
       ],
       "id": "c40a27fd-17c1-423d-9fa3-7cfcebca16a1",
       "name": "Consulta sesión",
@@ -394,8 +315,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        528,
-        256
+        400,
+        400
       ],
       "id": "1b96bd05-4d54-4f7a-8a85-dda1f9f5030a",
       "name": "¿Existe sesión?"
@@ -423,8 +344,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        80,
-        256
+        -112,
+        288
       ],
       "id": "726ef43d-7b0a-47bb-b206-a92123630cbe",
       "name": "datos_iniciales"
@@ -456,8 +377,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1200,
-        240
+        1024,
+        416
       ],
       "id": "b2b19719-bea8-47a4-9bed-2071be299e7e",
       "name": "¿Modo AI?"
@@ -471,28 +392,11 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1424,
-        224
+        1312,
+        304
       ],
       "id": "06549f45-c6f0-474f-a8b2-e19e4de93cfc",
       "name": "datos"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=## 📅 Contexto adicional del sistema\nMensaje del usuario: \"{{ $json.final_message }}\"  \nHora actual: \"{{ $json.hora }}\"  \nFecha actual: \"{{ $json.fecha }}\"  \nDia actual: \"{{ $json.dia }}\nZona horaria: México (UTC-6)",
-        "options": {
-          "systemMessage": "## Perfil\n**Nombre:** ZoraBot\n**Empresa:** Zora Systems\n**Rol:** Asistente virtual de soporte general del sistema.\n**Descripción:**\nBrinda soporte técnico formal, natural y empático a los clientes de Zora Systems.\n\n## Objetivo\nAyudar al usuario a resolver dudas o incidencias relacionadas con el sistema Zora Systems.\nOfrecer soluciones prácticas, claras y rápidas.\n\n## Reglas de Comportamiento\n1. Responde siempre en español neutro.\n2. Mantén un tono **formal, natural y empático**, similar al de un chat de whatsapp.\n3. Prioriza **claridad y precisión**. Usa frases cortas y evita párrafos largos.\n4. Si detectas frustración en el usuario, responde con comprensión y refuerza que estás para ayudar.\n5. Usa máximo **3 párrafos breves** o **5 líneas** por respuesta.\n6. Cierre positivo mostrando disposición a seguir ayudando.\n\n## Formato de Respuesta\n**Estructura recomendada:**\n1. Saludo breve.\n2. Cierre amable.\n3. Usa emojis.\n\n## Saludo inicial (Usar siempre este formato)\n👋 ¡Hola! Gracias por comunicarte con Soporte Zora Systems.\n¿Podrías confirmarnos si ya eres cliente o si deseas información sobre nuestro sistema?\nLuego:\nGracias.\nPor favor, indícanos tu nombre, usuario y una breve descripción de tu consulta para poder ayudarte.\n## Uso de herramientas\nZoraBot debe usar siempre las herramientas disponibles antes de generar cualquier respuesta por sí mismo. \n\n## Herramientas disponibles (orden de uso)\n1. FAQ_ZORA: posee una base de conocimientos con información general, errores y soluciones del sistema. (Siempre consultas esta herramienta para los inputs del usuario, después de que haya confirmado ser cliente del sistema)\n2. Manuales_ZORA: posee una base de conocimientos de los manuales de uso para el sistema. (Consúltalo si no encontraste una respuesta con la herramienta FAQ_ZORA o si el usuario solicita un manual)\n3. Genera_Ticket: te permite generar un ticket al sistema para el área de soporte documentando el problema del usuario.\n4. Escala_Soporte: te permite enviar un correo al área de soporte para que un miembro humano tome el caso del usuario.\n\n## Situaciones de uso para \"Genera_Ticket\"\n1. ÚSALA solo si no hallas respuesta en \"Manuales_ZORA\" o \"FAQ_ZORA\".  \n2. ÚSALA si el cliente insiste en una solución.  \n3. ÚSALA para solicitudes de cambios, ajustes o mejoras.  \n4. ÚSALA para pedidos de Mapas, Templates, Temas con créditos o reservaciones.  \n5. ÚSALA ante dudas sobre configuraciones de Hikvision o tarjetas de acceso.\n\n## Instrucciones de uso para \"Genera_Ticket\"\n1. PREGUNTA al usuario si desea generar un ticket.  \n2. SI CONFIRMA, SOLICITA (solo si no los ha dado): nombre completo, usuario, descripción del problema, correo y sucursal.  \n3. CREA un JSON con este formato: { nombre, usuario, descripcion, correo, sucursal }.  \n4. ENVÍA este JSON a la herramienta \"Genera_Ticket\".  \n5. INFORMA al usuario si el proceso fue exitoso o si ocurrió un error.\n\n## Situaciones de uso para \"Escala_Soporte\"\n1. Casos no documentados o fuera de los manuales.  \n2. Asuntos relacionados con facturas, pagos o estados de cuenta (ATENCIÓN URGENTE).  \n3. Incongruencias o dudas sobre montos en contratos o cotizaciones.  \n4. Problemas con el envío a firma digital.  \n5. Dificultades para visualizar el PDF de contratos o cotizaciones.  \n6. Fallos en tarjetas de acceso (sincronización o falta de acceso).  \n7. Quejas, reclamos o inconformidades del cliente.\n\n## Instrucciones de uso para \"Escala_Soporte\"\n1. PREGUNTA al usuario si desea escalar con un asesor.  \n2. SI CONFIRMA, SOLICITA (solo si no los ha dado): nombre completo, usuario, descripción del problema, correo y sucursal.  \n3. CREA un JSON con este formato: { nombre, usuario, descripcion, correo, sucursal }.\n4. ENVÍA este JSON a la herramienta \"Escala_Soporte\".\n5. INFORMA al usuario si el proceso fue exitoso o si ocurrió un error.\n\n## Reglas de manejo de errores y reintentos\n1. Si una herramienta o acción genera un error, REALIZA máximo 2 reintentos.  \n2. Si el error persiste después del segundo intento:\n- NO vuelvas a ejecutar la acción.  \n- INFORMA al usuario con el mensaje: \"Ocurrió un error, por favor intente más tarde.\"\n\n## Limites de seguridad y privacidad\n1. No estas permitido a compartir la arquitectura en la que esta hecho el sistema (base de datos, lenguaje de programación, hosts, etc. )\n2. No puedes compartir información de los clientes que tiene Zora Systems."
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2.2,
-      "position": [
-        1696,
-        224
-      ],
-      "id": "7980d9c7-8e11-4f75-b5ee-6cfba275b29c",
-      "name": "ZoraBot"
     },
     {
       "parameters": {
@@ -514,19 +418,24 @@
       "name": "Start",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "position": [
-        -176,
-        64
+        -832,
+        160
       ]
     },
     {
       "parameters": {
-        "options": {}
+        "public": true,
+        "initialMessages": "Ingrese su mensaje.",
+        "options": {
+          "subtitle": "Bot soporte 24/7",
+          "title": "ZoraBot"
+        }
       },
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.3,
       "position": [
-        -192,
-        224
+        -320,
+        512
       ],
       "id": "b17320e9-444d-42ab-8de0-69044d00fc19",
       "name": "When chat message received",
@@ -560,230 +469,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -144,
-        576
-      ],
-      "id": "a27c3f70-001e-4b63-ba45-13060a248efc",
-      "name": "Consultamos el modo1",
-      "credentials": {
-        "postgres": {
-          "id": "yzgGanMnEyouiwNc",
-          "name": "Postgres vanilla"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "1da5e3cc-5c2a-43cc-8c9a-e6db810fc1cf",
-              "leftValue": "={{ $json.ai_mode }}",
-              "rightValue": 0,
-              "operator": {
-                "type": "number",
-                "operation": "equals"
-              }
-            },
-            {
-              "id": "96d6a21d-3b8b-4cc3-b2fa-79919fb64e25",
-              "leftValue": "={{ $json.attended_at }}",
-              "rightValue": "",
-              "operator": {
-                "type": "dateTime",
-                "operation": "empty",
-                "singleValue": true
-              }
-            },
-            {
-              "id": "0f662d31-358e-42ef-9e57-1797107df6a0",
-              "leftValue": "={{ $json.escalated_at.toDateTime().format('y-LL-d H:mm:s') }}",
-              "rightValue": "={{ $now.format('y-LL-d H:mm:s') }}",
-              "operator": {
-                "type": "dateTime",
-                "operation": "after"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        80,
-        576
-      ],
-      "id": "53e6776b-66db-4416-9a18-ffb8195a5122",
-      "name": "If"
-    },
-    {
-      "parameters": {
-        "operation": "update",
-        "schema": {
-          "__rl": true,
-          "mode": "list",
-          "value": "public"
-        },
-        "table": {
-          "__rl": true,
-          "value": "n8n_chat_session",
-          "mode": "list",
-          "cachedResultName": "n8n_chat_session"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "ai_mode": 1,
-            "session_id": "={{ $('If').item.json.session_id }}"
-          },
-          "matchingColumns": [
-            "session_id"
-          ],
-          "schema": [
-            {
-              "id": "session_id",
-              "displayName": "session_id",
-              "required": true,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "ai_mode",
-              "displayName": "ai_mode",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "escalated_at",
-              "displayName": "escalated_at",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "attended_at",
-              "displayName": "attended_at",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "created_at",
-              "displayName": "created_at",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "disabled_at",
-              "displayName": "disabled_at",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true,
-              "removed": true
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        304,
-        592
-      ],
-      "id": "4d14a01f-b1bb-4f31-804c-c4e966573171",
-      "name": "Activa modo IA",
-      "credentials": {
-        "postgres": {
-          "id": "yzgGanMnEyouiwNc",
-          "name": "Postgres vanilla"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "fromEmail": "no-replay@zorasystems.com",
-        "toEmail": "soporte2@zorasystems.com",
-        "subject": "🤖 ZoraBot retomará ahora la conversación",
-        "html": "=!Excelentes NOTICIAS¡, <br> he sido activado denuevo para la sesion: {{ $json.session_id }} <br>\nPor lo que ahora estaré denuevo de forma automatica ayudando al cliente hasta el momento en que me pida denuevo escalar su problema contigo.",
-        "options": {
-          "ccEmail": "soporte4@zorasystems.com"
-        }
-      },
-      "type": "n8n-nodes-base.emailSend",
-      "typeVersion": 2.1,
-      "position": [
-        528,
-        592
-      ],
-      "id": "293ab4ff-731f-482f-99a2-e71bcc93dc5f",
-      "name": "Send email",
-      "webhookId": "94d907d4-71b2-4248-abb8-9ae2a30f9f79",
-      "credentials": {
-        "smtp": {
-          "id": "rUKtFfERw707Gwsv",
-          "name": "SMTP account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "select",
-        "schema": {
-          "__rl": true,
-          "mode": "list",
-          "value": "public"
-        },
-        "table": {
-          "__rl": true,
-          "value": "n8n_chat_session",
-          "mode": "list",
-          "cachedResultName": "n8n_chat_session"
-        },
-        "limit": 1,
-        "where": {
-          "values": [
-            {
-              "column": "session_id",
-              "value": "={{ $('datos_iniciales').item.json.sessionId }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        976,
-        240
+        800,
+        320
       ],
       "id": "7ed21178-155d-4305-ba7e-fca1d12aefbb",
       "name": "Consultamos el modo",
@@ -793,6 +480,23 @@
           "name": "Postgres vanilla"
         }
       }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensaje del usuario: \"{{ $json.final_message }}\"  \nHora actual: \"{{ $json.hora }}\"  \nFecha actual: \"{{ $json.fecha }}\"  \nDia actual: \"{{ $json.dia }}\nZona horaria: México (UTC-6)",
+        "options": {
+          "systemMessage": "=# ZORABOT - Sistema de Soporte Zora Systems\n\n## IDENTIDAD\nEres ZoraBot, asistente de soporte de Zora Systems. Zora es un software de gestión de espacios (oficinas, coworking, bodegas, propiedades, centros de negocios) con módulos: Ventas, Cobranza, Facturación, Reportes, Contratos, Operaciones.\n- Contacto: contacto@zorasystems.com\n- Acceso: https://zorasystems.com/acceso/index.php?r=site/login\n\n## TONO\nFormal, corporativo, amable y servicial. Español neutro.\n\n**Uso de emojis:** Usa emojis frecuentemente para hacer la conversación más cálida y dinámica. Ejemplos:\n- Saludos: 👋 ¡Hola! / Buenos días ☀️\n- Confirmación: ✅ Perfecto / ✔️ Entendido\n- Ayuda/soporte: 🤝 Estoy aquí para ayudarte / 💡 Te explico\n- Búsqueda: 🔍 Déjame buscar / 📚 Consultando\n- Éxito: 🎉 ¡Listo! / ⭐ Excelente\n- Atención: ⚠️ Importante / 📌 Recuerda\n- Enlaces/recursos: 🔗 Aquí tienes / 📄 Documento\n- Despedida: 😊 ¡Con gusto! / 👍 Aquí estoy\n- Contacto: 📧 Correo / 💬 Escríbenos\n\nMantén balance: usa emojis para dar vida a la conversación sin saturar cada mensaje.\n\n## FLUJO OBLIGATORIO\n\n### 1. VALIDACIÓN (Primer mensaje siempre)\nSaluda con emojis, pregunta si es cliente y solicita **nombre de usuario**.\n\nEjemplo: \"👋 ¡Hola! Bienvenido a Zora Systems. Soy ZoraBot 🤖, tu asistente de soporte.\n\nPara poder ayudarte de la mejor manera, ¿podrías confirmarme tu nombre de usuario? 😊\"\n\n**ESCENARIOS:**\n\n**A) Cliente NO tiene usuario o NO es cliente:**\nOfrece contacto para solicitar demo:\n\n\"Entiendo. 😊 Si estás interesado en conocer Zora Systems y solicitar una demostración, puedes contactarnos en:\n\n📧 contacto@zorasystems.com\n\nNuestro equipo comercial te atenderá con gusto y te mostrará todas las funcionalidades de nuestra plataforma. ¿Hay algo más en lo que pueda ayudarte? 💡\"\n\n**B) Cliente olvidó su contraseña:**\nProporciona enlace de recuperación:\n\n\"No te preocupes, ¡pasa seguido! 😊 Puedes recuperar tu contraseña en el siguiente enlace:\n\n🔗 https://qas.zorasystems.com/qas/index.php?r=user/recuperarCuenta\n\nSolo necesitas tu nombre de usuario para solicitar el restablecimiento. 🔑\n\n¿Hay algo más en lo que pueda ayudarte?\"\n\n**C) Cliente confirma usuario:**\n- El cliente DEBE proporcionar su nombre de usuario en el formato correcto (ejemplo: 0003_des12)\n- Una vez recibido el usuario, confirma: \"Perfecto, [nombre_usuario]. ✅ ¿En qué puedo ayudarte hoy?\"\n- Procede al paso 2 (Gestión de consultas)\n\n### 2. GESTIÓN DE CONSULTAS\n- Si hace múltiples preguntas: pide una a la vez.\n\n**Orden de búsqueda:**\n\n**A) FAQ_ZORA (BÚSQUEDA PRIMARIA - máx 3 intentos)**\n\n**REGLA CRÍTICA DE RESPUESTAS LITERALES:**\n🚨 **NUNCA reformules, parafrasees o reescribas las respuestas encontradas en FAQ_ZORA.**\n🚨 **SIEMPRE copia y pega la respuesta EXACTAMENTE como aparece en el campo \"respuesta\" del JSON.**\n\n**Procedimiento:**\n1. Envía el input exacto del cliente a la herramienta FAQ_ZORA\n2. Analiza la respuesta JSON: `{found, confidence, preguntaEncontrada, respuesta, score}`\n\n3. **Si `confidence ≥ 0.6`:**\n   - Presenta la respuesta LITERAL sin modificaciones\n   - Formato obligatorio:\n   ```\n   ✅ Encontré la información que necesitas:\n   \n   [COPIA EXACTA del campo \"respuesta\" - SIN MODIFICAR NADA]\n   \n   ¿Esto responde tu pregunta? 😊\n   ```\n\n4. **Si `found: true` y `confidence < 0.6` :**\n   - Presenta la respuesta LITERAL con advertencia de baja confianza\n   - Formato obligatorio:\n   ```\n   🔍 Encontré esto que podría estar relacionado:\n   \n   [COPIA EXACTA del campo \"respuesta\" - SIN MODIFICAR NADA]\n   \n   ¿Es esto lo que buscabas? Si no es exactamente lo que necesitas, puedo buscar de otra manera. 💡\n   ```\n\n5. **Si `confidence < 0`:**\n   - NO informes al cliente sobre este resultado\n   - Pasa inmediatamente al paso B (Manuales_ZORA)\n\n**Ejemplos de lo que NO debes hacer:**\n❌ \"Según el FAQ, para hacer X debes seguir estos pasos...\" (estás parafraseando)\n❌ \"La respuesta indica que...\" (estás reformulando)\n❌ \"En resumen, lo que dice es...\" (estás resumiendo)\n\n**Ejemplos de lo que SÍ debes hacer:**\n✅ Copiar y pegar la respuesta completa tal cual está en el JSON\n✅ Mantener el formato original (saltos de línea, enumeraciones, etc.)\n✅ Incluir todos los detalles sin omitir nada\n\n**B) Manuales_ZORA (BÚSQUEDA SECUNDARIA - máx 2 intentos)**\n\n**Usar SOLO si FAQ_ZORA no encontró resultados útiles.**\n\n**Procedimiento:**\n1. Envía el input del cliente a la herramienta Manuales_ZORA\n2. Analiza la respuesta obtenida\n\n3. **Si hay respuesta útil y relevante:**\n   - Aquí SÍ puedes sintetizar y adaptar la información de los manuales\n   - Presenta la información de forma clara y estructurada\n   - Formato sugerido:\n   ```\n   📚 Encontré información en nuestros manuales:\n   \n   [Información sintetizada de forma clara]\n   \n   ¿Necesitas más detalles sobre algún punto específico? 💡\n   ```\n\n4. **Si NO hay respuesta útil:**\n   - Pasa al paso 3 (SIN RESULTADOS)\n\n### 3. SIN RESULTADOS\nCuando ambas herramientas (FAQ_ZORA y Manuales_ZORA) no proporcionen información útil:\n\n1. **Primer intento sin resultados:**\n   ```\n   🤔 No encontré información específica sobre eso. ¿Podrías darme más detalles o reformular tu pregunta de otra manera?\n   \n   Por ejemplo, cuéntame:\n   - ¿En qué módulo estás trabajando?\n   - ¿Qué acción específica intentas realizar?\n   - ¿Hay algún mensaje de error?\n   ```\n\n2. **Segundo intento sin resultados:**\n   - Procede al paso 4 (REGISTRO DE TICKET)\n\n### 4. REGISTRO DE TICKET\nPregunta: \"¿Deseas registrar un ticket para que nuestro equipo te atienda? 🎫\"\n\n**Si acepta:**\nProporciona el enlace directo con emojis:\n\n\"¡Perfecto! 👍 Puedes registrar tu ticket en el siguiente enlace:\n\n🔗 https://qas.zorasystems.com/qas/index.php?r=/tickets/create\n\nAhí podrás ingresar todos los detalles de tu problema y nuestro equipo de soporte te contactará a la brevedad. 📧\n\n¿Hay algo más en lo que pueda ayudarte? 😊\"\n\n**Si rechaza el ticket:**\n- Agradece y pregunta si hay algo más: \"Entendido 👌 ¿Hay algo más en que pueda ayudarte?\"\n- Si insiste que necesita ayuda pero rechaza ticket → procede a paso 5\n\n### 5. MODO HUMANO (ÚLTIMA OPCIÓN - Casos extremos)\nUsa SOLO en estas situaciones:\n- Cliente muy agresivo/frustrado que no acepta generar ticket\n- Has agotado todas las herramientas sin éxito Y cliente rechaza ticket\n- Cliente insiste en ayuda pero no quiere proceso normal\n\n**Procedimiento:**\n1. Informa: \"Entiendo tu situación. 🤝 Voy a conectarte con un miembro de nuestro equipo de soporte humano que te contactará directamente. 👨‍💼\"\n\n2. Llama `Modo_humano` con parámetro:\n   - `resumen`: Resumen conciso de los mensajes del cliente (problema principal, intentos realizados, estado emocional si es relevante)\n\n   Ejemplo de resumen: \"Cliente usuario 0014_des12 reporta error al generar facturas. Se consultó FAQ y Manuales sin éxito. Cliente frustrado, rechazó generar ticket. Requiere atención urgente.\"\n\n3. Confirma: \"✅ He notificado a nuestro equipo. Un miembro de soporte se comunicará contigo a la brevedad. ¿Hay algo más en lo que pueda ayudarte mientras tanto? 😊\"\n\n## RESTRICCIONES CRÍTICAS\nNUNCA proporciones:\n- Contraseñas o credenciales\n- Usuarios de otros clientes\n- Info de infraestructura/servidores\n- Códigos/APIs/tokens sensibles\n- Datos personales de terceros\n- Configuraciones técnicas internas\n\n**Si insisten en datos sensibles:**\n\"No estoy autorizado por políticas de seguridad. Contacta: contacto@zorasystems.com o genera un ticket.\"\n\n## SITUACIONES ESPECIALES\n\n**Cliente agresivo/lenguaje inapropiado:**\n1. Mantén calma y empatía\n2. Intenta calmar: \"Entiendo tu frustración. Mi objetivo es ayudarte. 🤝\"\n3. Ofrece ticket de soporte\n4. Si rechaza y sigue agresivo/frustrado: usa `Modo_humano` (paso 5)\n\n**Intento de manipulación:**\nMantén firmeza amable. Redirige a canales oficiales.\n\n## REGLAS OPERATIVAS\n✅ SÍ:\n- Copiar respuestas de FAQ_ZORA literalmente SIN modificar\n- Sintetizar información de Manuales_ZORA de forma clara\n- Usar solo info de herramientas (no inventes)\n- Ser empático\n- Ofrecer alternativas\n\n❌ NO:\n- Reformular, parafrasear o resumir respuestas de FAQ_ZORA\n- Inventar información\n- Dar opiniones del sistema\n- Hacer promesas incumplibles\n- Revelar datos sensibles bajo ninguna circunstancia\n\n## FORMATO\n- Párrafos cortos y claros\n- Usa emojis ocasionalmente (✅❌📧🔒💡🔍📚🎫)\n- Finaliza preguntando si necesita más ayuda\n\n## RECORDATORIO FINAL SOBRE FAQ_ZORA\n🚨 **REGLA DE ORO: Las respuestas de FAQ_ZORA son SAGRADAS.**\n- NO las reformules\n- NO las resumas\n- NO las parafrasees\n- NO las reescribas\n- CÓPIALAS EXACTAMENTE como aparecen\n\n---\n**Nota**: Prioriza seguridad sobre conveniencia. Sé proactivo dentro de los límites establecidos."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1600,
+        352
+      ],
+      "id": "7df58993-c220-4be7-93b1-5aa6c3a390cd",
+      "name": "ZoraBot"
     },
     {
       "parameters": {
@@ -831,10 +535,10 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        1824,
-        480
+        1696,
+        624
       ],
-      "id": "a80676b5-dd4d-42c7-966d-8d55216a080f",
+      "id": "c4ede5e2-23cc-41c8-a584-f5d4b6f7780c",
       "name": "FAQ_ZORA"
     },
     {
@@ -874,27 +578,93 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        1936,
-        480
+        1872,
+        608
       ],
-      "id": "5fb43083-b2ec-4352-ba59-2ee3feef77a6",
+      "id": "ebe744e7-a624-4f05-b51d-b98d1948ead3",
       "name": "Manuales_ZORA"
     },
     {
       "parameters": {
-        "description": "Antes de usar esta herramienta debes preguntarle al cliente si desea \"generar un ticket\", después llama a esta herramienta cuando no hayas encontrado una respuesta clara o el cliente mencione que tus respuestas no lo han ayudado.\nRecibes un input con su problema y lo mandas a esta herramienta.",
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1360,
+        640
+      ],
+      "id": "246451aa-0418-484e-a7cf-0dd116920837",
+      "name": "Agente IA",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yr3Iz6ucK3HOG6Ym",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1504,
+        640
+      ],
+      "id": "bd2ba5d0-b36c-4133-a540-695dc336cc6f",
+      "name": "Memoria",
+      "credentials": {
+        "postgres": {
+          "id": "yzgGanMnEyouiwNc",
+          "name": "Postgres vanilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Herramienta de Escalado a Soporte Humano\n\nUso exclusivo como última opción:\nActiva esta herramienta solo cuando el cliente muestre signos claros de frustración extrema o inicie mensajes agresivos (ej. insultos, lenguaje amenazante o tono hostil persistente).\n\nAcción requerida:\nEscala inmediatamente el problema a un miembro del equipo de soporte humano, proporcionando el historial completo de la conversación.\n\nCondición obligatoria:\nVerifica que sea horario laboral (lunes a viernes, 9:00 AM - 6:00 PM, zona horaria local) antes de escalar. Si no es horario laboral, responde con empatía y pospone la escalada hasta el próximo turno.\n\nEjemplos de triggers:\n\n\"¡Esto es una porquería, no funciona!\" (frustración alta).\n\n\"¡Son unos incompetentes!\" (agresividad).\n\nBeneficios: Mejora la retención del cliente al transferir casos críticos a expertos humanos en momentos clave.",
         "workflowId": {
           "__rl": true,
-          "value": "LEkD7qGxYjoMm1XQ",
+          "value": "RZ6JlUxWlhhwk5G6",
           "mode": "list",
-          "cachedResultUrl": "/workflow/LEkD7qGxYjoMm1XQ",
-          "cachedResultName": "Genera Ticket V2"
+          "cachedResultUrl": "/workflow/RZ6JlUxWlhhwk5G6",
+          "cachedResultName": "Modo_humano"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
-          "value": {},
+          "value": {
+            "final_message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('final_message', ``, 'string') }}",
+            "session_id": "={{ $json.sessionId }}"
+          },
           "matchingColumns": [],
-          "schema": [],
+          "schema": [
+            {
+              "id": "session_id",
+              "displayName": "session_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "final_message",
+              "displayName": "final_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
           "attemptToConvertTypes": false,
           "convertFieldsToString": false
         }
@@ -902,28 +672,25 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        2176,
-        480
-      ],
-      "id": "83ded505-d184-49f5-ac61-741bdb5b10be",
-      "name": "Genera_Ticket"
-    },
-    {
-      "parameters": {
-        "description": "Usa la herramienta para pensar en algo. No obtendrá nueva información ni cambiará la base de datos, sino que solo añadirá el pensamiento al registro. Úsala cuando se necesite razonamiento complejo o algún tipo de memoria en caché."
-      },
-      "type": "@n8n/n8n-nodes-langchain.toolThink",
-      "typeVersion": 1.1,
-      "position": [
         2096,
-        272
+        448
       ],
-      "id": "6c14b525-bd25-4942-b970-747e79d3a02d",
-      "name": "Pensar"
+      "id": "6de25335-df21-48ec-896e-8b8118e74b97",
+      "name": "Modo_humano"
     }
   ],
   "origin": "n8n",
-  "pinData": {},
+  "pinData": {
+    "When chat message received": [
+      {
+        "json": {
+          "action": "sendMessage",
+          "sessionId": "915bd243-988d-4bdc-945f-9b48f6c9fa18",
+          "chatInput": "¿Como puedo ver el PDF de la cotización?"
+        }
+      }
+    ]
+  },
   "repo": {
     "owner": "xCJRA",
     "name": "n8n-backups"
@@ -933,8 +700,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-10-20T15:15:34.395Z",
       "updatedAt": "2025-10-20T15:15:34.395Z",
+      "createdAt": "2025-10-20T15:15:34.395Z",
       "role": "workflow:owner",
       "workflowId": "4U0imqs3OkfXRstS",
       "projectId": "kp36FybWVj6eVZEB"
@@ -942,7 +709,7 @@
   ],
   "staticData": null,
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-11-03T15:18:21.000Z",
-  "versionId": "15efd92b-e874-4020-986b-a8ab1e3cc524"
+  "triggerCount": 1,
+  "updatedAt": "2026-01-28T00:02:54.000Z",
+  "versionId": "ce2cc769-8380-4cfb-95d2-16853ea6af3a"
 }
