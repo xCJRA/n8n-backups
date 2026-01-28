@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Chat model": {
       "ai_languageModel": [
@@ -199,7 +201,7 @@
   },
   "createdAt": "2025-10-14T20:13:38.615Z",
   "id": "6j8KAb6yJlR8OKXV",
-  "isArchived": false,
+  "isArchived": true,
   "meta": {
     "templateCredsSetupCompleted": true
   },
@@ -951,8 +953,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-10-14T20:13:38.618Z",
       "updatedAt": "2025-10-14T20:13:38.618Z",
+      "createdAt": "2025-10-14T20:13:38.618Z",
       "role": "workflow:owner",
       "workflowId": "6j8KAb6yJlR8OKXV",
       "projectId": "kp36FybWVj6eVZEB"
@@ -961,6 +963,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-23T20:01:50.000Z",
-  "versionId": "513c899b-3628-4179-9417-56f1a39de7f0"
+  "updatedAt": "2026-01-19T17:17:47.000Z",
+  "versionId": "a9ec8ce9-27f6-47bd-86f9-a8c155b6bd8e"
 }
