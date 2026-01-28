@@ -1,0 +1,35 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {},
+  "createdAt": "2026-01-28T03:52:56.967Z",
+  "id": "CB3xudeVO62rSEna",
+  "isArchived": false,
+  "meta": null,
+  "name": "RAG ZORA",
+  "nodes": [],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "xCJRA",
+    "name": "n8n-backups"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-28T03:52:56.974Z",
+      "createdAt": "2026-01-28T03:52:56.974Z",
+      "role": "workflow:owner",
+      "workflowId": "CB3xudeVO62rSEna",
+      "projectId": "kp36FybWVj6eVZEB"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-28T03:52:56.000Z",
+  "versionId": "ab9be460-18a1-440a-9bda-76eca46ed4a7"
+}
