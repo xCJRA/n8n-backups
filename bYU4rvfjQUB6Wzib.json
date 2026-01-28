@@ -1,5 +1,374 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-05T16:34:52.468Z",
+    "createdAt": "2025-12-05T16:34:52.468Z",
+    "versionId": "34ae5a81-7310-431e-a50f-680160a5e34d",
+    "workflowId": "bYU4rvfjQUB6Wzib",
+    "nodes": [
+      {
+        "parameters": {
+          "content": "## Explicación. \nEsta herramienta es solamente para volver a activar el modo \"IA\" a una conversación de whatsapp por medio del \"session_id\"."
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -592,
+          192
+        ],
+        "id": "b9e3f817-efb9-4a18-9988-df85cbd5fa01",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "authentication": "basicAuth",
+          "formTitle": "Activa modo IA",
+          "formDescription": "Esta herramienta es solamente para volver a activar el modo \"IA\" a una conversación de whatsapp por medio del \"session_id\".",
+          "formFields": {
+            "values": [
+              {
+                "fieldLabel": "session_id",
+                "placeholder": "Sesion id del correo recibido",
+                "requiredField": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.formTrigger",
+        "typeVersion": 2.3,
+        "position": [
+          -304,
+          176
+        ],
+        "id": "ce576ac0-b187-45c3-a477-e6e03f9f33d8",
+        "name": "On form submission",
+        "webhookId": "d293a9de-a6ab-4091-a7e9-1b8ec4cdf0cd",
+        "credentials": {
+          "httpBasicAuth": {
+            "id": "DcUUnRHwYFDRXdG4",
+            "name": "0003_n8n"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "536cb73e-03d6-477c-9cae-89a0ee349a36",
+                "name": "session_id",
+                "value": "={{ $json.session_id }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -272,
+          400
+        ],
+        "id": "35c8dad1-ead8-4a97-a148-aabfbd6c4143",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "n8n_chat_session",
+            "mode": "list",
+            "cachedResultName": "n8n_chat_session"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "ai_mode": 1,
+              "session_id": "={{ $('If').item.json.session_id }}",
+              "escalated_at": "=",
+              "attended_at": "="
+            },
+            "matchingColumns": [
+              "session_id"
+            ],
+            "schema": [
+              {
+                "id": "session_id",
+                "displayName": "session_id",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "ai_mode",
+                "displayName": "ai_mode",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "escalated_at",
+                "displayName": "escalated_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "attended_at",
+                "displayName": "attended_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "created_at",
+                "displayName": "created_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "disabled_at",
+                "displayName": "disabled_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          384,
+          416
+        ],
+        "id": "efebbe4e-310c-4d3d-8c17-817180ee771e",
+        "name": "Activa modo IA",
+        "credentials": {
+          "postgres": {
+            "id": "yzgGanMnEyouiwNc",
+            "name": "Postgres vanilla"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT EXISTS(\n  SELECT 1 FROM n8n_chat_session WHERE session_id = '{{ $json.session_id }}'\n) as existe;",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -48,
+          592
+        ],
+        "id": "93a837b7-19a1-4e79-8592-73659e73f185",
+        "name": "Consulta sesión",
+        "credentials": {
+          "postgres": {
+            "id": "yzgGanMnEyouiwNc",
+            "name": "Postgres vanilla"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "6d862c96-b154-4a1f-b02a-40a88ed1550e",
+                "leftValue": "={{ $json.existe }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          192,
+          592
+        ],
+        "id": "694e7cca-bdbc-4093-8672-d2b14157b17e",
+        "name": "¿Existe sesión?"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "d824efc0-dbb2-44f3-8550-699d0e6b24a2",
+                "leftValue": "={{ $json.session_id }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -64,
+          400
+        ],
+        "id": "e07307dd-b737-4d80-a05b-9d51180ef75f",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "fromEmail": "no-replay@zorasystems.com",
+          "toEmail": "soporte2@zorasystems.com",
+          "subject": "🤖 ZoraBot retomará ahora la conversación",
+          "html": "=!Excelentes NOTICIAS¡, <br> he sido activado denuevo para la sesion: {{ $json.session_id }} <br>\nPor lo que ahora estaré denuevo de forma automatica ayudando al cliente hasta el momento en que me pida denuevo escalar su problema contigo.",
+          "options": {
+            "ccEmail": "soporte4@zorasystems.com"
+          }
+        },
+        "type": "n8n-nodes-base.emailSend",
+        "typeVersion": 2.1,
+        "position": [
+          544,
+          416
+        ],
+        "id": "0fd5a682-b6b9-4a85-a70e-10d04aadf4dd",
+        "name": "Send email",
+        "webhookId": "94d907d4-71b2-4248-abb8-9ae2a30f9f79",
+        "credentials": {
+          "smtp": {
+            "id": "rUKtFfERw707Gwsv",
+            "name": "SMTP account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "On form submission": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Activa modo IA": {
+        "main": [
+          [
+            {
+              "node": "Send email",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Consulta sesión": {
+        "main": [
+          [
+            {
+              "node": "¿Existe sesión?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "¿Existe sesión?": {
+        "main": [
+          [
+            {
+              "node": "Activa modo IA",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Consulta sesión",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "34ae5a81-7310-431e-a50f-680160a5e34d",
   "connections": {
     "On form submission": {
       "main": [
@@ -377,8 +746,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-10-10T22:28:21.665Z",
       "updatedAt": "2025-10-10T22:28:21.665Z",
+      "createdAt": "2025-10-10T22:28:21.665Z",
       "role": "workflow:owner",
       "workflowId": "bYU4rvfjQUB6Wzib",
       "projectId": "kp36FybWVj6eVZEB"
@@ -387,6 +756,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-19T04:12:00.000Z",
+  "updatedAt": "2026-01-27T05:57:31.000Z",
   "versionId": "34ae5a81-7310-431e-a50f-680160a5e34d"
 }
