@@ -1,5 +1,103 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-05T16:34:52.468Z",
+    "createdAt": "2025-12-05T16:34:52.468Z",
+    "versionId": "f905968a-a53b-4f3b-85e1-e4dcb0b45b51",
+    "workflowId": "oXODTgBJ1zcr1VX8",
+    "nodes": [
+      {
+        "parameters": {
+          "public": true,
+          "initialMessages": "Gracias por comunicarte con Soporte Zora Systems. 😊\n¿Podrías confirmarme si ya eres cliente o deseas información sobre el sistema?",
+          "options": {
+            "allowedOrigins": "*",
+            "subtitle": "Estoy para ayudarte, con problemas de Zora Systems.",
+            "title": "Hola, Soy ZoraBot! 👋"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          -5488,
+          -544
+        ],
+        "id": "d3bd9d78-b139-41aa-83bf-c84221210c9c",
+        "name": "When chat message received",
+        "webhookId": "dcdff4e5-1348-42cf-904d-deb29bf161f7"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "4U0imqs3OkfXRstS",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/4U0imqs3OkfXRstS",
+            "cachedResultName": "Zora-Slim"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "chatInput": "={{ $json.chatInput }}",
+              "sessionId": "={{ $json.sessionId }}"
+            },
+            "matchingColumns": [
+              "chatInput",
+              "sessionId"
+            ],
+            "schema": [
+              {
+                "id": "chatInput",
+                "displayName": "chatInput",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "sessionId",
+                "displayName": "sessionId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.2,
+        "position": [
+          -5264,
+          -544
+        ],
+        "name": "Call Agente ZoraBot",
+        "id": "be3a057e-a70b-41ba-a3a2-619a33b630b6"
+      }
+    ],
+    "connections": {
+      "When chat message received": {
+        "main": [
+          [
+            {
+              "node": "Call Agente ZoraBot",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "f905968a-a53b-4f3b-85e1-e4dcb0b45b51",
   "connections": {
     "When chat message received": {
       "main": [
@@ -106,8 +204,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-09-30T00:47:06.931Z",
       "updatedAt": "2025-09-30T00:47:06.931Z",
+      "createdAt": "2025-09-30T00:47:06.931Z",
       "role": "workflow:owner",
       "workflowId": "oXODTgBJ1zcr1VX8",
       "projectId": "kp36FybWVj6eVZEB"
