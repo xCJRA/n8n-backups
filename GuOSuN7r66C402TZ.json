@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Start": {
       "main": [
@@ -165,7 +167,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Obtener la consulta del usuario\nconst userQuery = $('extrae mensaje').first().json.mensaje.toLowerCase();\n\n// Obtener datos del Google Sheets\nconst faqData = $input.all();\n\n// Validar que hay datos\nif (!faqData || faqData.length === 0) {\n  return {\n    json: {\n      found: false,\n      confidence: 0,\n      pregunta: '',\n      respuesta: 'No hay preguntas frecuentes disponibles en este momento.',\n      score: 0\n    }\n  };\n}\n\n// Función para calcular similitud básica\nfunction calculateSimilarity(str1, str2) {\n  // Validar strings vacíos\n  if (!str1 || !str2) return 0;\n  \n  const words1 = str1.toLowerCase().split(/\\s+/).filter(w => w.length > 0);\n  const words2 = str2.toLowerCase().split(/\\s+/).filter(w => w.length > 0);\n  \n  // Evitar división por cero\n  if (words1.length === 0 || words2.length === 0) return 0;\n  \n  let matches = 0;\n  words1.forEach(word => {\n    if (words2.includes(word) && word.length > 3) {\n      matches++;\n    }\n  });\n  \n  return matches / Math.max(words1.length, words2.length);\n}\n\n// Buscar mejor coincidencia\nlet bestMatch = null;\nlet bestScore = 0;\n\nfaqData.forEach(row => {\n  // ✅ Solo usar columna Pregunta\n  const pregunta = row.json.Pregunta || '';\n  \n  // Saltar filas vacías\n  if (!pregunta) return;\n  \n  // Calcular similitud solo con la pregunta\n  const score = calculateSimilarity(userQuery, pregunta);\n  \n  if (score > bestScore) {\n    bestScore = score;\n    bestMatch = row.json;\n  }\n});\n\n// Retornar resultado\nreturn {\n  json: {\n    found: bestScore > 0.3, // Umbral de confianza\n    confidence: Math.round(bestScore * 100) / 100,\n    preguntaEncontrada: bestMatch?.Pregunta || '',\n    respuesta: bestMatch?.Respuesta || 'No encontré una respuesta para tu consulta. ¿Puedo ayudarte de otra manera?',\n    score: bestScore\n  }\n};"
+        "jsCode": "// Obtener la consulta del usuario\nconst userQuery = $('extrae mensaje').first().json.mensaje.toLowerCase();\n\n// Obtener datos del Google Sheets\nconst faqData = $input.all();\n\n// Validar que hay datos\nif (!faqData || faqData.length === 0) {\n  return {\n    json: {\n      found: false,\n      confidence: 0,\n      pregunta: '',\n      respuesta: 'No hay preguntas frecuentes disponibles en este momento.',\n      score: 0\n    }\n  };\n}\n\n// Función para calcular similitud básica\nfunction calculateSimilarity(str1, str2) {\n  // Validar strings vacíos\n  if (!str1 || !str2) return 0;\n  \n  const words1 = str1.toLowerCase().split(/\\s+/).filter(w => w.length > 0);\n  const words2 = str2.toLowerCase().split(/\\s+/).filter(w => w.length > 0);\n  \n  // Evitar división por cero\n  if (words1.length === 0 || words2.length === 0) return 0;\n  \n  let matches = 0;\n  words1.forEach(word => {\n    if (words2.includes(word) && word.length > 3) {\n      matches++;\n    }\n  });\n  \n  return matches / Math.max(words1.length, words2.length);\n}\n\n// Buscar mejor coincidencia\nlet bestMatch = null;\nlet bestScore = 0;\n\nfaqData.forEach(row => {\n  // ✅ Solo usar columna Pregunta\n  const pregunta = row.json.Pregunta || '';\n  \n  // Saltar filas vacías\n  if (!pregunta) return;\n  \n  // Calcular similitud solo con la pregunta\n  const score = calculateSimilarity(userQuery, pregunta);\n  \n  if (score > bestScore) {\n    bestScore = score;\n    bestMatch = row.json;\n  }\n});\n\n// Retornar resultado\nreturn {\n  json: {\n    found: bestScore > 0.1, // Umbral de confianza\n    confidence: Math.round(bestScore * 100) / 100,\n    preguntaEncontrada: bestMatch?.Pregunta || '',\n    respuesta: bestMatch?.Respuesta || 'No encontré una respuesta para tu consulta. ¿Puedo ayudarte de otra manera?',\n    score: bestScore\n  }\n};"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -196,8 +198,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-10-17T20:06:46.043Z",
       "updatedAt": "2025-10-17T20:06:46.043Z",
+      "createdAt": "2025-10-17T20:06:46.043Z",
       "role": "workflow:owner",
       "workflowId": "GuOSuN7r66C402TZ",
       "projectId": "kp36FybWVj6eVZEB"
@@ -206,6 +208,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-10-19T04:13:19.000Z",
-  "versionId": "46be395a-11df-4873-a06f-2bede70daa74"
+  "updatedAt": "2026-01-27T23:32:18.000Z",
+  "versionId": "03749786-6425-4e66-8153-228ee79e9eaa"
 }
