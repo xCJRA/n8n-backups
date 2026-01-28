@@ -1,11 +1,13 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Inicio": {
       "main": [
         [
           {
-            "node": "Procesa datos",
+            "node": "Api Genera Tickets",
             "type": "main",
             "index": 0
           }
@@ -52,17 +54,6 @@
         ]
       ]
     },
-    "Procesa datos": {
-      "main": [
-        [
-          {
-            "node": "Api Genera Tickets",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Procesa datos user": {
       "main": [
         [
@@ -96,7 +87,8 @@
   "nodes": [
     {
       "parameters": {
-        "inputSource": "passthrough"
+        "inputSource": "jsonExample",
+        "jsonExample": "{\n  \"nombre\": \"César\",\n  \"usuario\": \"0003_des12\",\n  \"descripcion\": \"Problema o consulta del sistema de ZORA\",\n  \"correo\":\"soporte@zorasystems.com\",\"sucursal\":\"Santa fe\"\n}"
       },
       "id": "ed88b0fb-88db-4219-9760-d2b6def27b24",
       "typeVersion": 1.1,
@@ -173,7 +165,7 @@
     {
       "parameters": {
         "fromEmail": "no-replay@zorasystems.com",
-        "toEmail": "chrisscr1030@gmail.com",
+        "toEmail": "cesarjreyesa1@gmail.com",
         "subject": "Se ha generado ticket a soporte.",
         "html": "=Buen dia,\nSoy ZoraBot, he generado un ticket al área de soporte.\nA continuación, le comparto los detalles.\n<table>\n<thead>\n<th>Nombre</th>\n<th>Correo</th>\n<th>Usuario</th>\n<th>Socnr</th>\n<th>Problema</th>\n</thead>\n<tbody>\n<tr>\n<td>\n {{ $json.nombre }}\n</td>\n<td>\n {{ $json.correoCliente }}\n</td>\n<td>\n {{ $json.usuario }}\n</td>\n<td>\n {{ $json.socnr }}\n</td>\n<td>\n {{ $json.descripcion }}\n</td>\n</tr>\n</tbody>\n</table>",
         "options": {
@@ -275,14 +267,36 @@
           ]
         },
         "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ $json.datos }}",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "nombre",
+              "value": "={{ $json.nombre }}"
+            },
+            {
+              "name": "usuario",
+              "value": "={{ $json.usuario }}"
+            },
+            {
+              "name": "descripcion",
+              "value": "={{ $json.descripcion }}"
+            },
+            {
+              "name": "correo",
+              "value": "={{ $json.correo }}"
+            },
+            {
+              "name": "sucursal",
+              "value": "={{ $json.sucursal }}"
+            }
+          ]
+        },
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -208,
+        -320,
         112
       ],
       "id": "542ae326-08d3-4219-8960-5cbdefb2809c",
@@ -293,50 +307,27 @@
         "assignments": {
           "assignments": [
             {
-              "id": "de8a0ede-cc3c-416e-810c-7e6c69a4f8b5",
-              "name": "datos",
-              "value": "={{ $json.query }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        -576,
-        112
-      ],
-      "id": "64c23067-3e35-4487-9760-c2d8b72c8d23",
-      "name": "Procesa datos"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
               "id": "38a60714-211b-473a-ba26-18d7a16b782b",
               "name": "nombre",
-              "value": "={{ $('Procesa datos').item.json.datos.parseJson().nombre}}",
+              "value": "={{ $('Inicio').item.json.nombre }}",
               "type": "string"
             },
             {
               "id": "60bd8f0a-3ee0-4d9e-9616-479a38e4c3b7",
               "name": "usuario",
-              "value": "={{ $('Procesa datos').item.json.datos.parseJson().usuario}}",
+              "value": "={{ $('Inicio').item.json.usuario }}",
               "type": "string"
             },
             {
               "id": "fe844caa-9b60-4aa2-a8ba-4376f93d029d",
               "name": "descripcion",
-              "value": "={{ $('Procesa datos').item.json.datos.parseJson().descripcion}}",
+              "value": "={{ $('Inicio').item.json.descripcion }}",
               "type": "string"
             },
             {
               "id": "00045037-bc17-4b2a-a5de-9f330114dd9f",
               "name": "correoCliente",
-              "value": "={{ $('Procesa datos').item.json.datos.parseJson().correo}}",
+              "value": "={{ $('Inicio').item.json.correo }}",
               "type": "string"
             },
             {
@@ -413,7 +404,19 @@
     }
   ],
   "origin": "n8n",
-  "pinData": {},
+  "pinData": {
+    "Inicio": [
+      {
+        "json": {
+          "nombre": "César",
+          "usuario": "0014_des12",
+          "descripcion": "Consulta sobre cómo generar una factura.",
+          "correo": "cesarjreyesa1@gmail.com",
+          "sucursal": "General"
+        }
+      }
+    ]
+  },
   "repo": {
     "owner": "xCJRA",
     "name": "n8n-backups"
@@ -423,8 +426,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-10-14T22:00:36.424Z",
       "updatedAt": "2025-10-14T22:00:36.424Z",
+      "createdAt": "2025-10-14T22:00:36.424Z",
       "role": "workflow:owner",
       "workflowId": "LEkD7qGxYjoMm1XQ",
       "projectId": "kp36FybWVj6eVZEB"
@@ -433,6 +436,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-10-20T05:15:09.000Z",
-  "versionId": "aaab5951-378c-476e-aba7-b4799d35e18f"
+  "updatedAt": "2026-01-27T05:18:01.000Z",
+  "versionId": "90ab8faf-0eaf-4834-a497-ee2cce620221"
 }
