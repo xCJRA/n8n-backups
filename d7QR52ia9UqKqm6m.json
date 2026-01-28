@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Activa modo IA": {
       "main": [
@@ -165,8 +167,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-10-10T23:10:59.379Z",
       "updatedAt": "2025-10-10T23:10:59.379Z",
+      "createdAt": "2025-10-10T23:10:59.379Z",
       "role": "workflow:owner",
       "workflowId": "d7QR52ia9UqKqm6m",
       "projectId": "kp36FybWVj6eVZEB"
