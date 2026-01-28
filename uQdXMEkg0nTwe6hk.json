@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "If": {
       "main": [
@@ -1159,8 +1161,8 @@
   "settings": {},
   "shared": [
     {
-      "createdAt": "2025-10-20T13:46:55.140Z",
       "updatedAt": "2025-10-20T13:46:55.140Z",
+      "createdAt": "2025-10-20T13:46:55.140Z",
       "role": "workflow:owner",
       "workflowId": "uQdXMEkg0nTwe6hk",
       "projectId": "kp36FybWVj6eVZEB"
