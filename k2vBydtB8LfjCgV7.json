@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Default Data Loader": {
       "ai_document": [
@@ -166,8 +168,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-10-16T05:16:23.079Z",
       "updatedAt": "2025-10-16T05:16:23.079Z",
+      "createdAt": "2025-10-16T05:16:23.079Z",
       "role": "workflow:owner",
       "workflowId": "k2vBydtB8LfjCgV7",
       "projectId": "kp36FybWVj6eVZEB"
