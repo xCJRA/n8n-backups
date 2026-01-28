@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Procesa datos": {
       "main": [
@@ -126,9 +128,9 @@
       "parameters": {
         "operation": "sendAndWait",
         "fromEmail": "no-replay@zorasystems.com",
-        "toEmail": "soporte2@zorasystems.com,soporte4@zorasystems.com",
+        "toEmail": "soporte2@zorasystems.com,soporte4@zorasystems.com,soporte5@zorasystems.com",
         "subject": "🚨 Escalación de caso: ZoraBot no pudo resolver la solicitud del cliente.",
-        "message": "=<p>Buen dia,\nNo pude ayudar al cliente con su caso por lo que pido tu ayuda para atender este chat porfavor.\nA continuación te muestro los datos de esta conversación.</p>\n<table>\n<thead>\n<th>Sesión id</th>\n<th>Ultimo mensaje </th>\n</thead>\n<tbody>\n<tr>\n<td>{{ $json.session_id }}</td>\n<td>{{ $json.final_message }}</td>\n</tr>\n</tbody>\n</table>\n<p>\n<strong> Nota: </strong> la session id\nes muy importante, una vez que acabes con el chat necesito que vuelvas a actualizar el \"modo\" en automatico para que pueda volver a atender al cliente en un futuro.\n<a href=\"https://n8n.srv1030836.hstgr.cloud/form/d293a9de-a6ab-4091-a7e9-1b8ec4cdf0cd\" > Click aqui para volver a activarme </a>\n</p>\n<p> <strong> Muchas gracias por tu atención </strong> </p>",
+        "message": "=<p>Buen día,</p>\n\n<p>\nNo fue posible dar seguimiento al caso del cliente, por lo que solicito tu apoyo para continuar con la atención de este chat.\nA continuación, te comparto la información correspondiente a la conversación:\n</p>\n\n<table border=\"1\" cellpadding=\"6\" cellspacing=\"0\">\n    <thead>\n        <tr>\n            <th>Sesión ID</th>\n            <th>Último mensaje</th>\n        </tr>\n    </thead>\n    <tbody>\n        <tr>\n            <td>{{ $json.session_id }}</td>\n            <td>{{ $json.final_message }}</td>\n        </tr>\n    </tbody>\n</table>\n\n<p>\n<strong>Nota importante:</strong><br>\nEl <strong>Session ID</strong> es indispensable. Una vez que finalices la atención del chat, es necesario que vuelvas a activar el <strong>modo automático</strong> para que el sistema pueda atender nuevamente al cliente en futuras interacciones.\n</p>\n\n<p>\nPara reactivarlo, ingresa al siguiente enlace:<br>\n<a href=\"https://n8n.srv1030836.hstgr.cloud/form/d293a9de-a6ab-4091-a7e9-1b8ec4cdf0cd\">\n    Click aquí para volver a activarme\n</a>\n</p>\n\n<p>\n<strong>Credenciales de acceso:</strong><br>\nUsuario: <code>0003_n8n</code><br>\nContraseña: <code>Sistemas.1</code>\n</p>\n\n<p><strong>Muchas gracias por tu apoyo.</strong></p>\n",
         "approvalOptions": {
           "values": {
             "approvalType": "double",
@@ -503,8 +505,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-10-11T00:28:02.226Z",
       "updatedAt": "2025-10-11T00:28:02.226Z",
+      "createdAt": "2025-10-11T00:28:02.226Z",
       "role": "workflow:owner",
       "workflowId": "RZ6JlUxWlhhwk5G6",
       "projectId": "kp36FybWVj6eVZEB"
@@ -513,6 +515,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-10-19T04:12:33.000Z",
-  "versionId": "e8e3c321-5f8b-4a10-8a82-ffa7418fd4fd"
+  "updatedAt": "2026-01-27T22:17:35.000Z",
+  "versionId": "769e934d-110e-4ecb-a64b-d1def01b3eca"
 }
