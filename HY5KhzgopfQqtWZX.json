@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Genera_Ticket": {
       "ai_tool": [
@@ -206,7 +208,7 @@
   },
   "createdAt": "2025-10-20T05:36:05.554Z",
   "id": "HY5KhzgopfQqtWZX",
-  "isArchived": false,
+  "isArchived": true,
   "meta": null,
   "name": "Zorabot-slim",
   "nodes": [
@@ -993,8 +995,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-10-20T05:36:05.564Z",
       "updatedAt": "2025-10-20T05:36:05.564Z",
+      "createdAt": "2025-10-20T05:36:05.564Z",
       "role": "workflow:owner",
       "workflowId": "HY5KhzgopfQqtWZX",
       "projectId": "kp36FybWVj6eVZEB"
@@ -1003,6 +1005,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-10-20T05:36:05.000Z",
-  "versionId": "2e44493f-b360-42e1-9f76-c11a3b24673b"
+  "updatedAt": "2026-01-22T17:06:25.000Z",
+  "versionId": "53a9633f-a77a-4518-8402-c4dc20221bda"
 }
