@@ -1,5 +1,453 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-27T00:34:49.998Z",
+    "createdAt": "2026-01-27T00:34:49.998Z",
+    "versionId": "b1e41f0b-fd2f-464e-aa75-d6b0db7806e6",
+    "workflowId": "vHk2URxX41I6fFZ7",
+    "nodes": [
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "87decc09-0cdd-4554-b3ea-abddaf9facfd",
+                "name": "sender",
+                "value": "={{ $json.contacts[0].wa_id }}",
+                "type": "string"
+              },
+              {
+                "id": "8acc3436-66bf-4fb0-b7e7-2a273cde36a8",
+                "name": "messageType",
+                "value": "={{ $json.messages[0].type }}",
+                "type": "string"
+              },
+              {
+                "id": "1bd838fc-932a-489f-b8fb-f03e14e7cbcb",
+                "name": "text_message",
+                "value": "={{ $json.messages[0].text.body }}",
+                "type": "string"
+              },
+              {
+                "id": "11381806-3d0a-4b33-b498-c9801a73dd63",
+                "name": "voice_message",
+                "value": "={{ $json.messages[0].audio.sha256 }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -288,
+          -576
+        ],
+        "id": "5f82577a-7779-4cdf-8386-3e22346465cb",
+        "name": "Data extraction"
+      },
+      {
+        "parameters": {
+          "operation": "toBinary",
+          "sourceProperty": "={{ $json.voice_message }}",
+          "options": {
+            "mimeType": "audio/ogg"
+          }
+        },
+        "type": "n8n-nodes-base.convertToFile",
+        "typeVersion": 1.1,
+        "position": [
+          160,
+          -480
+        ],
+        "id": "a6e1e649-7c54-46ce-a6db-62d2149b199e",
+        "name": "Convert to File"
+      },
+      {
+        "parameters": {
+          "resource": "audio",
+          "operation": "transcribe",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.openAi",
+        "typeVersion": 1.8,
+        "position": [
+          384,
+          -480
+        ],
+        "id": "f391d60a-046a-4ea0-a0a5-775620058600",
+        "name": "Transcribe a recording",
+        "credentials": {
+          "openAiApi": {
+            "id": "Yr3Iz6ucK3HOG6Ym",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "4bb9e73a-42b0-4abf-8fcd-2beb183925dc",
+                "name": "final_message",
+                "value": "={{ $json.text_message }}",
+                "type": "string"
+              },
+              {
+                "id": "2d2ccceb-78b2-451d-9c31-8e0914373967",
+                "name": "sessionId",
+                "value": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          608,
+          -672
+        ],
+        "id": "02a212a3-7abe-4572-a198-b5de296c9701",
+        "name": "text_message"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "515787e4-f881-499d-ba3d-74257bd37388",
+                "name": "final_message",
+                "value": "={{ $json.text }}",
+                "type": "string"
+              },
+              {
+                "id": "e0389cbd-7cb8-41a9-bc54-d59c37bd074e",
+                "name": "sessionId",
+                "value": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          608,
+          -480
+        ],
+        "id": "ffc5a2b5-956f-41dd-99ab-507dd6497487",
+        "name": "message_voicetxt"
+      },
+      {
+        "parameters": {
+          "updates": [
+            "messages"
+          ],
+          "options": {}
+        },
+        "type": "n8n-nodes-base.whatsAppTrigger",
+        "typeVersion": 1,
+        "position": [
+          -512,
+          -576
+        ],
+        "id": "f4a69b59-d338-4d13-99ed-173077f1d2d8",
+        "name": "WhatsApp Trigger",
+        "webhookId": "88ba393c-5662-4a92-8e54-a1e65f1acdf4",
+        "credentials": {
+          "whatsAppTriggerApi": {
+            "id": "HttxTZvzXx3AKLUv",
+            "name": "WhatsApp OAuth account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "send",
+          "phoneNumberId": "811864612019978",
+          "recipientPhoneNumber": "={{ $('Edit Fields').item.json.sessionId }}",
+          "textBody": "={{ $json.output }}",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-base.whatsApp",
+        "typeVersion": 1,
+        "position": [
+          1424,
+          -608
+        ],
+        "id": "d8e30555-bd64-4e7a-9023-0a2a3dc929bb",
+        "name": "enviar mensaje",
+        "webhookId": "c0dfa986-06ca-44e9-987b-5cb14b5c2d95",
+        "credentials": {
+          "whatsAppApi": {
+            "id": "hOdODybY93isNp3g",
+            "name": "WhatsApp account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.messageType }}",
+                      "rightValue": "text",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "8840206c-44a3-44a3-bc0a-f6c7fcdb1354"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "cf0a8a2d-ddce-47f7-a3e9-37c448c49c0e",
+                      "leftValue": "={{ $json.messageType }}",
+                      "rightValue": "audio",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          -64,
+          -576
+        ],
+        "id": "b885b569-088c-4e7f-af60-4b1b392b9dce",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "nrFZTduFnd7laekp",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/nrFZTduFnd7laekp",
+            "cachedResultName": "ZoraBotWSP"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "chatInput": "={{ $json.chatInput }}",
+              "sessionId": "={{ $json.sessionId }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "chatInput",
+                "displayName": "chatInput",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "sessionId",
+                "displayName": "sessionId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.2,
+        "position": [
+          1136,
+          -608
+        ],
+        "name": "Call Agente ZoraBot",
+        "id": "0e67fc96-889a-446c-be00-f044491769ac"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "771c0833-d3c2-40e9-8272-15609835bb31",
+                "name": "chatInput",
+                "value": "={{ $json.final_message }}",
+                "type": "string"
+              },
+              {
+                "id": "30a95c08-fb41-4b04-8b0e-772cf91c4c52",
+                "name": "sessionId",
+                "value": "={{ $json.sessionId }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          880,
+          -608
+        ],
+        "id": "4339b253-b565-4402-9fbe-7b7371acd1b1",
+        "name": "Edit Fields"
+      }
+    ],
+    "connections": {
+      "Data extraction": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Convert to File": {
+        "main": [
+          [
+            {
+              "node": "Transcribe a recording",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Transcribe a recording": {
+        "main": [
+          [
+            {
+              "node": "message_voicetxt",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "text_message": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "message_voicetxt": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "WhatsApp Trigger": {
+        "main": [
+          [
+            {
+              "node": "Data extraction",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "text_message",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Convert to File",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call Agente ZoraBot": {
+        "main": [
+          [
+            {
+              "node": "enviar mensaje",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "enviar mensaje": {
+        "main": [
+          []
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Call Agente ZoraBot",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Zora Systems",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "b1e41f0b-fd2f-464e-aa75-d6b0db7806e6",
   "connections": {
     "Data extraction": {
       "main": [
@@ -284,8 +732,8 @@
     {
       "parameters": {
         "operation": "send",
-        "phoneNumberId": "680877451786352",
-        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+        "phoneNumberId": "811864612019978",
+        "recipientPhoneNumber": "={{ $('Edit Fields').item.json.sessionId }}",
         "textBody": "={{ $json.output }}",
         "additionalFields": {}
       },
@@ -371,10 +819,10 @@
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "4U0imqs3OkfXRstS",
+          "value": "nrFZTduFnd7laekp",
           "mode": "list",
-          "cachedResultUrl": "/workflow/4U0imqs3OkfXRstS",
-          "cachedResultName": "Zora-Slim"
+          "cachedResultUrl": "/workflow/nrFZTduFnd7laekp",
+          "cachedResultName": "ZoraBotWSP"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -382,10 +830,7 @@
             "chatInput": "={{ $json.chatInput }}",
             "sessionId": "={{ $json.sessionId }}"
           },
-          "matchingColumns": [
-            "chatInput",
-            "sessionId"
-          ],
+          "matchingColumns": [],
           "schema": [
             {
               "id": "chatInput",
@@ -393,8 +838,7 @@
               "required": false,
               "defaultMatch": false,
               "display": true,
-              "canBeUsedToMatch": true,
-              "removed": false
+              "canBeUsedToMatch": true
             },
             {
               "id": "sessionId",
@@ -402,8 +846,7 @@
               "required": false,
               "defaultMatch": false,
               "display": true,
-              "canBeUsedToMatch": true,
-              "removed": false
+              "canBeUsedToMatch": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -461,8 +904,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-09-26T17:42:05.537Z",
       "updatedAt": "2025-09-26T17:42:05.537Z",
+      "createdAt": "2025-09-26T17:42:05.537Z",
       "role": "workflow:owner",
       "workflowId": "vHk2URxX41I6fFZ7",
       "projectId": "kp36FybWVj6eVZEB"
@@ -471,6 +914,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-20T15:25:51.000Z",
-  "versionId": "264f1135-bc20-4158-ac7f-19db57915ffc"
+  "updatedAt": "2026-01-27T22:21:28.000Z",
+  "versionId": "b1e41f0b-fd2f-464e-aa75-d6b0db7806e6"
 }
